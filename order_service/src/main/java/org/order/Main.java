@@ -1,4 +1,4 @@
-package main.java.org.order;
+package org.order;
 
 public class Main {
     public static void main(String[] args) {

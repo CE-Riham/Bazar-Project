@@ -1,4 +1,4 @@
-package main.java.org.frontTier;
+package org.frontTier;
 
 public class Main {
     public static void main(String[] args) {
