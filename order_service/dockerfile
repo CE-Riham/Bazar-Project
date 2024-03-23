@@ -17,7 +17,7 @@ COPY --from=builder /usr/src/app/order_service/target/order_service-1.0-SNAPSHOT
 
 WORKDIR /app
 
-EXPOSE 8083
+EXPOSE 8082
 
 CMD ["java", "-jar", "order_service.jar"]
 

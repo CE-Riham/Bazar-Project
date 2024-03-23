@@ -1,22 +1,29 @@
 version: '3.8'
 services:
-  catalog_service:
-    build:
-      context: .
-      dockerfile: catalog_service/Dockerfile
-    ports:
-      - "8081:8081"
-
   front_tier:
     build:
       context: .
       dockerfile: front_tier/Dockerfile
     ports:
-      - "8082:8082"
+      - "1218:1218"
+    networks:
+      - front
+      - back
+
+  catalog_service:
+    build:
+      context: .
+      dockerfile: catalog_service/Dockerfile
+    networks:
+      - back
 
   order_service:
     build:
       context: .
       dockerfile: order_service/Dockerfile
-    ports:
-      - "8083:8083"
+    networks:
+      - back
+
+networks:
+  front:
+  back:

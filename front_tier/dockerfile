@@ -17,7 +17,7 @@ COPY --from=builder /usr/src/app/front_tier/target/front_tier-1.0-SNAPSHOT.jar /
 
 WORKDIR /app
 
-EXPOSE 8082
+EXPOSE 1218
 
 CMD ["java", "-jar", "front_tier.jar"]
 

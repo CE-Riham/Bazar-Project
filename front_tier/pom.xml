@@ -60,6 +60,10 @@
             <version>2.9.3</version> <!-- Check for the latest version suitable for your needs -->
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
         <!-- Additional dependencies for API communication, JSON handling, etc. -->
     </dependencies>
 

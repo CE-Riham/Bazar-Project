@@ -3,8 +3,8 @@ import static spark.Spark.*;
 
 public class Main {
     public static void main(String[] args) {
-        port(8083);
-        get("/hello", (req, res) -> "Hello im Order");
+        port(8082);
+        get("/hello", (req, res) -> "Hello from Order Service");
 
     }
 }
