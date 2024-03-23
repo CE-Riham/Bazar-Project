@@ -1,7 +1,10 @@
 package org.order;
+import static spark.Spark.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello order");
+        port(8081);
+        get("/hello3", (req, res) -> "Hello im Order");
+
     }
 }

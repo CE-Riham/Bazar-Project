@@ -1,26 +1,23 @@
-# Step 1: Build the application with Maven
-# Start with a JDK 19 image that has Maven
-FROM openjdk:19-slim as build
-WORKDIR /app
 
-# Install Maven
-RUN apt-get update && \
-    apt-get install -y maven && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Use Maven base image to build the project
+FROM maven:3.6.3-jdk-11 AS builder
 
-# Copy the project files into the image
-COPY ./pom.xml ./pom.xml
-COPY ./src ./src
+# Copy the entire project
+COPY . /usr/src/app
 
-# Use Maven to build the application
+# Set the working directory to the module
+WORKDIR /usr/src/app/front_tier
 RUN mvn clean package -DskipTests
 
-# Step 2: Create the runtime image
-FROM openjdk:19-slim
+# Use Java base image to run the application
+FROM openjdk:11-jre-slim
+
+# Adjust the source path to match the actual JAR location
+COPY --from=builder /usr/src/app/front_tier/target/front_tier-1.0-SNAPSHOT.jar /app/front_tier.jar
+
 WORKDIR /app
 
-# Copy the JAR from the build stage to the runtime stage
-COPY --from=build /app/target/*.jar /app/app.jar
+EXPOSE 8082
 
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+CMD ["java", "-jar", "front_tier.jar"]
+
