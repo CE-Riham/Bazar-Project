@@ -30,7 +30,7 @@ public class Main {
     private static void setupExceptionHandling() {
         exception(Exception.class, (exception, request, response) -> {
             logger.error("Unhandled exception", exception);
-            response.status(500); // HTTP 500 Internal Server Error
+            response.status(500);
             response.body("Server error occurred: " + exception.getMessage());
         });
     }

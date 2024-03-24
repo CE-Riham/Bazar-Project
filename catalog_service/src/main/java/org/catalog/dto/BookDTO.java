@@ -1,26 +1,28 @@
-package org.catalog.models;
-public class Book {
-    private String id;
+package org.catalog.dto;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
+
+public class BookDTO {
+    @NotBlank(message = "Title cannot be blank")
     private String title;
+
+    @PositiveOrZero(message = "Quantity must be positive or zero")
     private Integer quantity;
+
+    @PositiveOrZero(message = "Price must be positive or zero")
     private Integer price;
 
-    public Book(String id, String title, Integer quantity, Integer price) {
-        this.id = id;
+    // Constructors (including a no-arg constructor for frameworks that require it)
+    public BookDTO() {
+    }
+
+    public BookDTO(String title, Integer quantity, Integer price) {
         this.title = title;
         this.quantity = quantity;
         this.price = price;
     }
 
     // Getters and setters
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return title;
     }
