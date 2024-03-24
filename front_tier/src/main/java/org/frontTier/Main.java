@@ -7,8 +7,9 @@ import org.apache.http.util.EntityUtils;
 import static spark.Spark.*;
 
 public class Main {
+    static final private Integer PORT = 1218;
     public static void main(String[] args) {
-        port(1218);
+        port(PORT);
         get("/hello", (req, res) -> {
             String orderServiceUrl = "http://order_service:8082/hello";
 
