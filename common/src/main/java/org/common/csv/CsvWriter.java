@@ -4,6 +4,7 @@ package org.common.csv;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.function.Function;
@@ -12,13 +13,13 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 @Slf4j
 public class CsvWriter<T> {
-    private final String filePath;
+    private final File file;
     private FileWriter writer;
     private final Function<T, String[]> parser;
 
     private void openWriter() {
         try {
-            writer = new FileWriter(filePath, true);
+            writer = new FileWriter(file, true);
         } catch (IOException e) {
             log.error(e.getMessage());
         }

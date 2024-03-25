@@ -1,18 +1,16 @@
-
-# Use Maven base image to build the project
 FROM maven:3.6.3-jdk-11 AS builder
 
-# Copy the entire project
 COPY . /usr/src/app
 
-# Set the working directory to the module
+WORKDIR /usr/src/app
+
+RUN mvn clean install -DskipTests
+
 WORKDIR /usr/src/app/front_tier
 RUN mvn clean package -DskipTests
 
-# Use Java base image to run the application
 FROM openjdk:11-jre-slim
 
-# Adjust the source path to match the actual JAR location
 COPY --from=builder /usr/src/app/front_tier/target/front_tier-1.0-SNAPSHOT.jar /app/front_tier.jar
 
 WORKDIR /app

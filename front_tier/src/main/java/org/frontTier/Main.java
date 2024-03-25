@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         port(PORT);
         get("/hello", (req, res) -> {
-            String orderServiceUrl = "http://order_service:8082/hello";
+            String orderServiceUrl = "http://order_service:8082/order";
 
             try (CloseableHttpClient client = HttpClients.createDefault()) {
                 HttpGet request = new HttpGet(orderServiceUrl);

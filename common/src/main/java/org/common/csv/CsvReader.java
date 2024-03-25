@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -15,14 +15,14 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class CsvReader<T> {
 
-    private final String filePath;
+    private final File file;
     private final Function<String[], T> parser;
     private static final String DELIMITER = ",";
     private static final String ERROR_MSG = "Failed to read orders from CSV: %s";
 
     public List<T> getAll() {
         List<T> items = new ArrayList<>();
-        try (BufferedReader br = Files.newBufferedReader(Path.of(filePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             // Skip the header row
             String line = br.readLine();
             while ((line = br.readLine()) != null) {
@@ -39,7 +39,7 @@ public class CsvReader<T> {
     public List<T> getRows(String columnName, String value) {
         List<T> items = new ArrayList<>();
         int columnIndex = -1;
-        try (BufferedReader br = Files.newBufferedReader(Path.of(filePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String[] headers = br.readLine().split(DELIMITER);
             for (int i = 0; i < headers.length; i++) {
                 if (headers[i].trim().equals(columnName)) {
@@ -65,7 +65,7 @@ public class CsvReader<T> {
 
     public T getRow(String columnName, String value) {
         int columnIndex = -1;
-        try (BufferedReader br = Files.newBufferedReader(Path.of(filePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String[] headers = br.readLine().split(DELIMITER);
             for (int i = 0; i < headers.length; i++) {
                 if (headers[i].equals(columnName)) {
