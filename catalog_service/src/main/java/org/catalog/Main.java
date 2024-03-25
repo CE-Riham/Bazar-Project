@@ -1,22 +1,27 @@
 package org.catalog;
 
+import lombok.extern.slf4j.Slf4j;
 import org.catalog.controllers.BookController;
 import org.catalog.controllers.CategoryController;
 import org.catalog.services.BookService;
 import org.catalog.services.CategoryService;
-import static spark.Spark.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import static spark.Spark.*;
+
+@Slf4j
 public class Main {
 
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
-    static final private Integer PORT = 8081;
+    private static final String JSON_TYPE = "application/json";
+    private static final Integer PORT = 8081;
+
     public static void main(String[] args) {
+        log.info(String.format("Catalog server started on port %d", PORT));
         port(PORT);
         setupControllers();
         setupExceptionHandling();
-        logger.info("Server started on port {}", PORT);
+        after((req, res) ->
+                res.type(JSON_TYPE)
+        );
     }
 
     private static void setupControllers() {
@@ -29,7 +34,7 @@ public class Main {
 
     private static void setupExceptionHandling() {
         exception(Exception.class, (exception, request, response) -> {
-            logger.error("Unhandled exception", exception);
+            log.error("Unhandled exception", exception);
             response.status(500);
             response.body("Server error occurred: " + exception.getMessage());
         });

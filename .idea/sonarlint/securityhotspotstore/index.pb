@@ -266,3 +266,5 @@ Q.idea/sonarlint/securityhotspotstore/1/3/13e7919677feefa0ed0d0b712780db3f211a40
 Q.idea/sonarlint/securityhotspotstore/c/c/ccd24a052cd5fff22ba1e8710e23283ffb26aed2,7\8\783f97d68975ca28ab4748298c3cc857fd99b8b7
 Å
 Q.idea/sonarlint/securityhotspotstore/6/b/6b78a002fc635fe421d2aefd902d0cf4c9a940c8,6\1\61154debe36d73b99f63142da7916473a4b25373
+j
+:catalog_service/src/main/java/org/catalog/dto/BookDTO.java,c\9\c95a71b1641567d2391ce2fd6ac5e792af611744

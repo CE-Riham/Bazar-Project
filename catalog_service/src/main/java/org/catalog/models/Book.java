@@ -1,47 +1,26 @@
 package org.catalog.models;
+
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
+
+@Data
+@RequiredArgsConstructor
 public class Book {
+    @NotBlank(message = "ID cannot be blank")
     private String id;
+
+    @NotBlank(message = "Category cannot be blank")
+    private String categoryName;
+
+    @NotBlank(message = "Title cannot be blank")
     private String title;
+
+    @PositiveOrZero(message = "Quantity must be positive or zero")
     private Integer quantity;
+
+    @PositiveOrZero(message = "Price must be positive or zero")
     private Integer price;
-
-    public Book(String id, String title, Integer quantity, Integer price) {
-        this.id = id;
-        this.title = title;
-        this.quantity = quantity;
-        this.price = price;
-    }
-
-    // Getters and setters
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
 }
