@@ -1,9 +1,9 @@
 package org.order.services;
 
-import org.order.models.Order;
-import org.order.utils.CsvReader;
-import org.order.utils.CsvWriter;
-import org.order.utils.Parser;
+import org.common.csv.CsvReader;
+import org.common.csv.CsvWriter;
+import org.common.models.Order;
+import org.common.parsers.Parser;
 
 import java.util.List;
 

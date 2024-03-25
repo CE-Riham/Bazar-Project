@@ -1,7 +1,7 @@
 package org.order.controllers;
 
 import com.google.gson.Gson;
-import org.order.models.Order;
+import org.common.models.Order;
 import org.order.services.OrderService;
 
 import static spark.Spark.*;

@@ -1,15 +1,16 @@
-package org.order.utils;
+package org.common.csv;
+
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.function.Function;
 
-@Slf4j
+
 @RequiredArgsConstructor
+@Slf4j
 public class CsvWriter<T> {
     private final String filePath;
     private FileWriter writer;

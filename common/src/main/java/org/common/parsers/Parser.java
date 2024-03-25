@@ -1,6 +1,7 @@
-package org.order.utils;
+package org.common.parsers;
 
-import org.order.models.Order;
+
+import org.common.models.Order;
 
 import java.util.function.Function;
 
@@ -26,7 +27,7 @@ public class Parser {
     };
 
     public static final Function<Order, String[]> orderToStringArray = order -> {
-        String []row = new String[4];
+        String[] row = new String[4];
         row[0] = order.getOrderId().toString();
         row[1] = order.getBookId().toString();
         row[2] = order.getQuantity().toString();
