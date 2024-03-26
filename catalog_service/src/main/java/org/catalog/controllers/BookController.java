@@ -1,11 +1,18 @@
 package org.catalog.controllers;
+
+import com.google.gson.Gson;
 import org.catalog.services.BookService;
+import org.common.models.Book;
 
 import static spark.Spark.*;
+
 
 public class BookController {
 
     private final BookService bookService;
+    private final Gson gson = new Gson();
+    private static final String BOOK_ID_PATH = "/:bookId";
+    private static final String BOOK_ID_PARAMETER = ":bookId";
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
@@ -14,18 +21,37 @@ public class BookController {
 
     private void setupRoutes() {
         path("/book", () -> {
-
-            // Get a book by ID
-            get("/:bookId", (req, res) -> "Get a book by ID");
-
-            // Create a new book
-            post("", (req, res) -> "Create a new book");
-
-            // Update a book by ID
-            put("/:bookId", (req, res) -> "Update a book by ID");
-
-
+            get("", this::getAllBooks, gson::toJson);
+            get(BOOK_ID_PATH, this::getBookByTd, gson::toJson);
+            post("", this::createBook);
+            put(BOOK_ID_PATH, this::updateBookById);
+            delete(BOOK_ID_PATH, this::deleteBookById);
         });
+    }
 
+    private Object getAllBooks(spark.Request req, spark.Response res) {
+        return bookService.getAllBooks();
+    }
+
+    private Object getBookByTd(spark.Request req, spark.Response res) {
+        String bookId = req.params(BOOK_ID_PARAMETER);
+        return bookService.getBookById(bookId);
+    }
+
+    private String createBook(spark.Request req, spark.Response res) {
+        Book newBook = gson.fromJson(req.body(), Book.class);
+        bookService.createBook(newBook);
+        return "Book was created successfully";
+    }
+
+    private String updateBookById(spark.Request req, spark.Response res) {
+        bookService.updateBookById(BOOK_ID_PARAMETER);
+        return "Book was updated successfully";
+    }
+
+    private String deleteBookById(spark.Request req, spark.Response res) {
+        String bookId = req.params(BOOK_ID_PARAMETER);
+        bookService.deleteBookById(bookId);
+        return "Book was deleted successfully";
     }
 }

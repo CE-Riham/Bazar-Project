@@ -4,8 +4,9 @@ import org.common.csv.CsvReader;
 import org.common.csv.CsvWriter;
 import org.common.models.Order;
 import org.common.parsers.OrderParser;
-import java.nio.file.Paths;
+
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class OrderService {
@@ -17,8 +18,8 @@ public class OrderService {
     public OrderService() {
         File ordersFile = Paths.get("data", "Orders.csv").toFile();
 
-        orderCsvReader = new CsvReader<>(ordersFile, OrderParser.stringArrayToOrder);
-        orderCsvWriter = new CsvWriter<>(ordersFile, OrderParser.orderToStringArray);
+        orderCsvReader = new CsvReader<>(ORDERS_FILE_PATH, OrderParser.stringArrayToOrder);
+        orderCsvWriter = new CsvWriter<>(ORDERS_FILE_PATH, OrderParser.orderToStringArray);
     }
 
     public List<Order> getAllOrders() {
@@ -26,10 +27,10 @@ public class OrderService {
     }
 
     public Order getOrderById(Integer orderId) {
-        return orderCsvReader.getRow("orderId", orderId.toString());
+        return orderCsvReader.getObjectWithCondition("orderId", orderId.toString());
     }
 
     public void createOrder(Order newOrder) {
-        orderCsvWriter.insertRow(newOrder);
+        orderCsvWriter.insertObject(newOrder);
     }
 }
