@@ -58,7 +58,7 @@ public class CsvReader{
             String row;
             while ((row = br.readLine()) != null) {
                 String[] cells = row.split(DELIMITER);
-                if (cells[columnIndex].equals(value) ^ Boolean.FALSE.equals(equal)) {
+                if (cells[columnIndex].trim().equals(value) ^ Boolean.FALSE.equals(equal)) {
                     lines.add(cells);
                 }
             }

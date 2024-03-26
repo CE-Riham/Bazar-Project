@@ -28,12 +28,13 @@ public class CategoryService {
     }
 
     public Category getCategoryById(String id) {
-        return categoryRepository.getObjectBy(CategoryColumn.ID.toString(),id);
+        return categoryRepository.getObjectBy(CategoryColumn.ID.toString(), id);
     }
 
-    public List<Book> getBooksByCategory(Category reqCategory) {
-        return bookRepository.getObjectsBy(BookColumn.CATEGORY.toString(),reqCategory.getName());
+    public List<Book> getBooksByCategory(String categoryName) {
+        return bookRepository.getObjectsBy(BookColumn.CATEGORY.toString(), categoryName);
     }
+
     public void createCategory(Category newCategory) {
         newCategory.setId(UUID.randomUUID().toString());
         categoryRepository.add(newCategory);

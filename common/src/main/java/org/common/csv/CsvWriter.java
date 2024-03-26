@@ -43,7 +43,7 @@ public class CsvWriter {
         openWriter(true);
         try {
             for (int i = 0; i < item.length; i++) {
-                writer.write(item[i] + (i == item.length - 1 ? "\n" : ", "));
+                writer.write(item[i].trim() + (i == item.length - 1 ? "\n" : ", "));
             }
             writer.flush(); // Flush changes to file
             closeWriter();

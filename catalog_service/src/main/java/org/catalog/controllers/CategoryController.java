@@ -12,6 +12,7 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final Gson gson = new Gson();
     private static final String CATEGORY_NAME_PATH = "/:category-name";
+    private static final String CATEGORY_NAME_PARAMETER = ":category-name";
 
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
@@ -28,8 +29,7 @@ public class CategoryController {
     }
 
     private Object getAllBooksInCategory(spark.Request req, spark.Response res) {
-        Category category = gson.fromJson(req.body(), Category.class);
-        return categoryService.getBooksByCategory(category);
+        return categoryService.getBooksByCategory(req.params(CATEGORY_NAME_PARAMETER));
     }
 
     private String createCategory(spark.Request req, spark.Response res) {

@@ -21,7 +21,7 @@ public class BookService {
     }
 
     public Book getBookById(String id) {
-        return  bookRepository.getObjectBy(BookColumn.ID.toString(),id);
+        return bookRepository.getObjectBy(BookColumn.ID.toString(), id);
     }
 
     public void createBook(Book newBook) {
@@ -30,7 +30,7 @@ public class BookService {
     }
 
     public void updateBookById(String id, Book newBook) {
-        bookRepository.updateObjectsBy(BookColumn.ID.toString(),id,newBook);
+        bookRepository.updateObjectsBy(BookColumn.ID.toString(), id, newBook);
     }
 
     public void deleteBookById(String id) {

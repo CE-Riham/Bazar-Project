@@ -73,7 +73,7 @@ public class Repository<T> {
         }
         csvWriter.clearFile();
         for (T item : items) {
-            csvWriter.insertLine(parser.toStringArray(item));
+            add(item);
         }
     }
 

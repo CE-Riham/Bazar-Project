@@ -1,7 +1,5 @@
 
-_
-java:S1128"=Remove this unused import 'org.catalog.services.BookService'.(››¥øÿÿÿÿ8Ÿ‚Âç1
-I
-java:S1128",Remove this unused import 'spark.Spark.put'.(ø‹â8¡‚Âç1
-I
-java:S1068"3Remove this unused "categoryService" private field.(å³Î
+N
+java:S1602",Remove useless curly braces around statement(‹ÂÑ·ÿÿÿÿÿ8šÅˆ×ç1
+N
+java:S1602",Remove useless curly braces around statement(Š»­µüÿÿÿÿ8Åˆ×ç1
