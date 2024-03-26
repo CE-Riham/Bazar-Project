@@ -1,6 +1,8 @@
 package org.order.controllers;
 
 import com.google.gson.Gson;
+import org.common.enums.StatusResponse;
+import org.common.models.ApiResponse;
 import org.common.models.Order;
 import org.order.services.OrderService;
 import spark.Request;
@@ -31,32 +33,32 @@ public class OrderController {
         });
     }
 
-    private Object getAllOrders(spark.Request req, spark.Response res) {
-        return orderService.getAllOrders();
+    private ApiResponse getAllOrders(spark.Request req, spark.Response res) {
+        return new ApiResponse(StatusResponse.SUCCESS, orderService.getAllOrders());
     }
 
-    private Object getOrderById(spark.Request req, spark.Response res) {
+    private ApiResponse getOrderById(spark.Request req, spark.Response res) {
         String orderId = req.params(ODER_ID_PARAMETER);
-        return orderService.getOrderById(orderId);
+        return new ApiResponse(StatusResponse.SUCCESS, orderService.getOrderById(orderId));
     }
 
-    private String createOrder(spark.Request req, spark.Response res) {
+    private ApiResponse createOrder(spark.Request req, spark.Response res) {
         Order newOrder = gson.fromJson(req.body(), Order.class);
         orderService.createOrder(newOrder);
-        return "Order created successfully";
+        return new ApiResponse(StatusResponse.SUCCESS);
     }
 
-    private String updateOrder(Request req, Response res) {
+    private ApiResponse updateOrder(Request req, Response res) {
         Order newOrder = gson.fromJson(req.body(), Order.class);
         newOrder.setId(req.params(ODER_ID_PARAMETER));
         orderService.updateOrderById(req.params(ODER_ID_PARAMETER), newOrder);
-        return "Order was updated successfully";
+        return new ApiResponse(StatusResponse.SUCCESS);
     }
 
-    private String deleteOrder(Request req, Response res) {
+    private ApiResponse deleteOrder(Request req, Response res) {
         String orderId = req.params(ODER_ID_PARAMETER);
         orderService.deleteOrderById(orderId);
-        return "Order was deleted successfully";
+        return new ApiResponse(StatusResponse.SUCCESS);
     }
 
 }
