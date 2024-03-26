@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 public class Category {
+
     @NotBlank(message = "ID cannot be blank")
     private String id;
 

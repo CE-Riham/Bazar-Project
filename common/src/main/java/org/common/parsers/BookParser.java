@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 public class BookParser {
     private BookParser() {
-        throw new UnsupportedOperationException("Parser class should not be instantiated");
+        throw new UnsupportedOperationException("Book parser class should not be instantiated");
     }
 
     public static final Function<String[], Book> stringArrayToBook = cells -> {
@@ -28,11 +28,11 @@ public class BookParser {
 
     public static final Function<Book, String[]> bookToStringArray = book -> {
         String[] row = new String[5];
-        row[0] = book.getId().toString();
-        row[1] = book.getTitle().toString();
+        row[0] = book.getId();
+        row[1] = book.getTitle();
         row[2] = book.getPrice().toString();
         row[3] = book.getQuantity().toString();
-        row[4] = book.getCategoryName().toString();
+        row[4] = book.getCategoryName();
         return row;
     };
 }

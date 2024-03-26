@@ -9,11 +9,12 @@ import javax.validation.constraints.PositiveOrZero;
 @Data
 @RequiredArgsConstructor
 public class Order {
+
     @NotBlank(message = "orderId cannot be blank")
-    private Integer orderId;
+    private String id;
 
     @NotBlank(message = " bookId cannot be blank")
-    private Integer bookId;
+    private String bookId;
 
     @NotBlank(message = " quantity cannot be blank")
     @PositiveOrZero(message = "quantity must be positive or zero")

@@ -321,3 +321,9 @@ w
 G.idea/sonarlint/issuestore/c/9/c95a71b1641567d2391ce2fd6ac5e792af611744,7\0\70760afca37bf4506934c8cf75d9231ed0b94b09
 Å
 Q.idea/sonarlint/securityhotspotstore/c/9/c95a71b1641567d2391ce2fd6ac5e792af611744,a\4\a4173a506626bcd2b93d9851ea282b4a2e746370
+g
+7common/src/main/java/org/common/parsers/BookParser.java,e\3\e36234b542fa4b6a89e361577f716d844a079f09
+k
+;common/src/main/java/org/common/parsers/CategoryParser.java,f\d\fd72421faca9883dc7c3469dbd2241124e9221b6
+h
+8common/src/main/java/org/common/parsers/OrderParser.java,e\f\ef7566f8d966facf727168293384f56c1082e95f

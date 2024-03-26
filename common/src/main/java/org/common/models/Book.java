@@ -11,12 +11,12 @@ import javax.validation.constraints.PositiveOrZero;
 public class Book {
     @NotBlank(message = "ID cannot be blank")
     private String id;
+
     @NotBlank(message = "Title cannot be blank")
     private String title;
 
     @PositiveOrZero(message = "Price must be positive or zero")
     private Double price;
-
 
     @PositiveOrZero(message = "Quantity must be positive or zero")
     private Integer quantity;
