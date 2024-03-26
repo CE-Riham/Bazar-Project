@@ -1,7 +1,6 @@
 package org.catalog.services;
 
-import org.common.csv.CsvReader;
-import org.common.csv.CsvWriter;
+import org.common.enums.BookColumn;
 import org.common.models.Book;
 import org.common.parsers.BookParser;
 import org.common.repository.Repository;
@@ -11,16 +10,10 @@ import java.util.UUID;
 
 public class BookService {
     private static final String BOOKS_FILE_PATH = "catalog_service/data/Books.csv";
-
-//    private final CsvReader<Book> bookCsvReader;
     private final Repository<Book> bookRepository;
-//    private final CsvWriter<Book> bookCsvWriter;
 
     public BookService() {
-//        File booksFile = Paths.get("data", "Books.csv").toFile();
         bookRepository = new Repository<>(BOOKS_FILE_PATH, new BookParser());
-//        bookCsvReader = new CsvReader<>(BOOKS_FILE_PATH, BookParser.stringArrayToBook);
-//        bookCsvWriter = new CsvWriter<>(BOOKS_FILE_PATH, BookParser.bookToStringArray);
     }
 
     public List<Book> getAllBooks() {
@@ -28,21 +21,20 @@ public class BookService {
     }
 
     public Book getBookById(String id) {
-//        return bookCsvReader.getObjectWithCondition("ID", id);
-        return null;
+        return  bookRepository.getObjectBy(BookColumn.ID.toString(),id);
     }
 
     public void createBook(Book newBook) {
         newBook.setId(UUID.randomUUID().toString());
-//        bookCsvWriter.insertObject(newBook);
+        bookRepository.add(newBook);
     }
 
-    public void updateBookById(String id) {
-        //TODO
+    public void updateBookById(String id, Book newBook) {
+        bookRepository.updateObjectsBy(BookColumn.ID.toString(),id,newBook);
     }
 
     public void deleteBookById(String id) {
-//        bookCsvWriter.deleteObjectsWithCondition("ID", id);
+        bookRepository.deleteObjectsBy(BookColumn.ID.toString(), id);
 
     }
 }

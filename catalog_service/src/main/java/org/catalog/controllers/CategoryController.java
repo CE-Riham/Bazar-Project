@@ -1,15 +1,17 @@
 package org.catalog.controllers;
 
-import org.catalog.services.BookService;
 import org.catalog.services.CategoryService;
+import com.google.gson.Gson;
+import org.common.models.Category;
 
 import static spark.Spark.*;
-import static spark.Spark.put;
+
 
 public class CategoryController {
 
-
     private final CategoryService categoryService;
+    private final Gson gson = new Gson();
+    private static final String CATEGORY_NAME_PATH = "/:category-name";
 
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
@@ -17,14 +19,22 @@ public class CategoryController {
     }
 
     private void setupRoutes() {
-        path("/category", () -> {
-
-            // Get a book by ID
-            get("/:category-name", (req, res) -> "Get a category by name");
-
-            // Create a new category
-            post("", (req, res) -> "Create a new category");
-
+        path("/api/category", () -> {
+            get(CATEGORY_NAME_PATH, this::getAllBooksInCategory, gson::toJson);
         });
+        path("/api/admin/category", () -> {
+            post("", this::createCategory, gson::toJson);
+        });
+    }
+
+    private Object getAllBooksInCategory(spark.Request req, spark.Response res) {
+        Category category = gson.fromJson(req.body(), Category.class);
+        return categoryService.getBooksByCategory(category);
+    }
+
+    private String createCategory(spark.Request req, spark.Response res) {
+        Category category = gson.fromJson(req.body(), Category.class);
+        categoryService.createCategory(category);
+        return "Category was Created successfully";
     }
 }

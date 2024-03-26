@@ -1,9 +1,11 @@
 package org.common.repository;
 
+import org.common.csv.CsvColumn;
 import org.common.csv.CsvReader;
 import org.common.csv.CsvWriter;
 import org.common.parsers.ParserInterface;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,8 +49,32 @@ public class Repository<T> {
         csvWriter.deleteObjectsWithCondition(columnName, value);
     }
 
-    public void updateObjectsBy(String columnName, String value, String newValue){
+    public void updateObjectsBy(String keyColumnName, String keyValue, T newObject) {
         List<T> items = getAll();
-
+        for (int i = 0; i < items.size(); i++) {
+            T item = items.get(i);
+            Field[] fields = item.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                if (field.isAnnotationPresent(CsvColumn.class)) {
+                    CsvColumn columnAnnotation = field.getAnnotation(CsvColumn.class);
+                    if (columnAnnotation.name().equals(keyColumnName)) {
+                        field.setAccessible(true);
+                        try {
+                            Object fieldValue = field.get(item);
+                            if (fieldValue != null && fieldValue.toString().equals(keyValue)) {
+                                items.set(i, newObject);
+                            }
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+        csvWriter.clearFile();
+        for (T item : items) {
+            csvWriter.insertLine(parser.toStringArray(item));
+        }
     }
+
 }

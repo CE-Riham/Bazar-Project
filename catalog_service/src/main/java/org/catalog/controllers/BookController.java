@@ -11,8 +11,8 @@ public class BookController {
 
     private final BookService bookService;
     private final Gson gson = new Gson();
-    private static final String BOOK_ID_PATH = "/:bookId";
-    private static final String BOOK_ID_PARAMETER = ":bookId";
+    private static final String BOOK_ID_PATH = "/:book-id";
+    private static final String BOOK_ID_PARAMETER = ":book-id";
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
@@ -20,9 +20,12 @@ public class BookController {
     }
 
     private void setupRoutes() {
-        path("/book", () -> {
+        path("/api/book", () -> {
             get("", this::getAllBooks, gson::toJson);
             get(BOOK_ID_PATH, this::getBookByTd, gson::toJson);
+        });
+
+        path("/api/admin/book", () -> {
             post("", this::createBook);
             put(BOOK_ID_PATH, this::updateBookById);
             delete(BOOK_ID_PATH, this::deleteBookById);
@@ -45,7 +48,9 @@ public class BookController {
     }
 
     private String updateBookById(spark.Request req, spark.Response res) {
-        bookService.updateBookById(BOOK_ID_PARAMETER);
+        Book newBook = gson.fromJson(req.body(), Book.class);
+        newBook.setId(req.params(BOOK_ID_PARAMETER));
+        bookService.updateBookById(req.params(BOOK_ID_PARAMETER),newBook);
         return "Book was updated successfully";
     }
 

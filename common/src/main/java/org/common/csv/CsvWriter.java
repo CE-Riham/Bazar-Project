@@ -32,7 +32,7 @@ public class CsvWriter {
         }
     }
 
-    private void clearFile() {
+    public void clearFile() {
         String[] header = new CsvReader(path).getHeader();
         openWriter(false);
         closeWriter();
@@ -60,6 +60,7 @@ public class CsvWriter {
         for (String[] line : lines)
             insertLine(line);
     }
+
 
 
 }

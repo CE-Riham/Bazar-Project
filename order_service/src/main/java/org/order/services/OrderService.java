@@ -15,7 +15,7 @@ public class OrderService {
     private final Repository<Order> orderRepository;
 
     public OrderService() {
-        File ordersFile = Paths.get("data", "Orders.csv").toFile();
+//        File ordersFile = Paths.get("data", "Orders.csv").toFile();
         orderRepository = new Repository<>(ORDERS_FILE_PATH, new OrderParser());
     }
 
@@ -24,7 +24,7 @@ public class OrderService {
     }
 
     public Order getOrderById(Integer orderId) {
-//        return orderCsvReader.getObjectWithCondition("orderId", orderId.toString());
+//        return orderCsvReader.getObjectWithCondition(OrderColumn.ID.toString(), orderId.toString());
         return null;
     }
 
