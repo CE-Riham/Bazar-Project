@@ -35,6 +35,5 @@ public class BookService {
 
     public void deleteBookById(String id) {
         bookRepository.deleteObjectsBy(BookColumn.ID.toString(), id);
-
     }
 }
