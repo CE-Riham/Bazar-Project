@@ -1,10 +1,10 @@
 package org.common.enums;
 
 public enum OrderColumn {
-    ID("Id"),
+    ID("ID"),
     QUANTITY("Quantity"),
     PAIDAMOUNT("PaidAmount"),
-    BOOKID("bookId");
+    BOOKID("BookId");
     private final String columnName;
 
     OrderColumn(String columnName) {
