@@ -1,9 +1,2 @@
 
-Q
-java:S1481"/Remove this unused "ordersFile" local variable.(›î×„ýÿÿÿÿ8†ª›Èç1
-H
-java:S2440"+Remove this instantiation of "OrderParser".(Ô¤íâ8ˆª›Èç1
-K
-java:S1172".Remove this unused method parameter "orderId".(‡ÊÇÒ8Ãß›Èç1
-]	java:S125"<This block of commented-out lines of code should be removed.(Ç²ÕÞúÿÿÿÿ8Äß›Èç1
-X	java:S125!"<This block of commented-out lines of code should be removed.(šÊ·°8ýœÈç1
+W	java:S125"<This block of commented-out lines of code should be removed.(îº…$8°ªØç1

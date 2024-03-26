@@ -2,6 +2,8 @@ package org.catalog.controllers;
 
 import com.google.gson.Gson;
 import org.catalog.services.BookService;
+import org.common.enums.StatusResponse;
+import org.common.models.ApiResponse;
 import org.common.models.Book;
 
 import static spark.Spark.*;
@@ -26,37 +28,37 @@ public class BookController {
         });
 
         path("/api/admin/book", () -> {
-            post("", this::createBook);
-            put(BOOK_ID_PATH, this::updateBookById);
-            delete(BOOK_ID_PATH, this::deleteBookById);
+            post("", this::createBook, gson::toJson);
+            put(BOOK_ID_PATH, this::updateBookById, gson::toJson);
+            delete(BOOK_ID_PATH, this::deleteBookById, gson::toJson);
         });
     }
 
-    private Object getAllBooks(spark.Request req, spark.Response res) {
-        return bookService.getAllBooks();
+    private ApiResponse getAllBooks(spark.Request req, spark.Response res) {
+        return new ApiResponse(StatusResponse.SUCCESS, bookService.getAllBooks());
     }
 
-    private Object getBookByTd(spark.Request req, spark.Response res) {
+    private ApiResponse getBookByTd(spark.Request req, spark.Response res) {
         String bookId = req.params(BOOK_ID_PARAMETER);
-        return bookService.getBookById(bookId);
+        return new ApiResponse(StatusResponse.SUCCESS, bookService.getBookById(bookId));
     }
 
-    private String createBook(spark.Request req, spark.Response res) {
+    private ApiResponse createBook(spark.Request req, spark.Response res) {
         Book newBook = gson.fromJson(req.body(), Book.class);
         bookService.createBook(newBook);
-        return "Book was created successfully";
+        return new ApiResponse(StatusResponse.SUCCESS);
     }
 
-    private String updateBookById(spark.Request req, spark.Response res) {
+    private ApiResponse updateBookById(spark.Request req, spark.Response res) {
         Book newBook = gson.fromJson(req.body(), Book.class);
         newBook.setId(req.params(BOOK_ID_PARAMETER));
-        bookService.updateBookById(req.params(BOOK_ID_PARAMETER),newBook);
-        return "Book was updated successfully";
+        bookService.updateBookById(req.params(BOOK_ID_PARAMETER), newBook);
+        return new ApiResponse(StatusResponse.SUCCESS);
     }
 
-    private String deleteBookById(spark.Request req, spark.Response res) {
+    private ApiResponse deleteBookById(spark.Request req, spark.Response res) {
         String bookId = req.params(BOOK_ID_PARAMETER);
         bookService.deleteBookById(bookId);
-        return "Book was deleted successfully";
+        return new ApiResponse(StatusResponse.SUCCESS);
     }
 }
