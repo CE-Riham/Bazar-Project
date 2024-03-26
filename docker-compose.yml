@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  front_tier:
+    build:
+      context: .
+      dockerfile: front_tier/Dockerfile
+    ports:
+      - "1218:1218"
+    networks:
+      - front
+      - back
+
+  catalog_service:
+    build:
+      context: .
+      dockerfile: catalog_service/Dockerfile
+    networks:
+      - back
+
+  order_service:
+    build:
+      context: .
+      dockerfile: order_service/Dockerfile
+    networks:
+      - back
+
+networks:
+  front:
+  back:
