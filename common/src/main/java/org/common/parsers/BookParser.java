@@ -4,35 +4,34 @@ import org.common.models.Book;
 
 import java.util.function.Function;
 
-public class BookParser {
-    private BookParser() {
-        throw new UnsupportedOperationException("Book parser class should not be instantiated");
-    }
+public class BookParser implements ParserInterface<Book>{
 
-    public static final Function<String[], Book> stringArrayToBook = cells -> {
-        if (cells.length != 5) {
+    @Override
+    public Book toObject(String[] line) {
+        if (line.length != 5) {
             throw new IllegalArgumentException("Invalid line format");
         }
         try {
             Book book = new Book();
-            book.setId(cells[0].trim());
-            book.setTitle(cells[1].trim());
-            book.setPrice(Double.parseDouble(cells[2].trim()));
-            book.setQuantity(Integer.parseInt(cells[3].trim()));
-            book.setCategoryName(cells[4].trim());
+            book.setId(line[0].trim());
+            book.setTitle(line[1].trim());
+            book.setPrice(Double.parseDouble(line[2].trim()));
+            book.setQuantity(Integer.parseInt(line[3].trim()));
+            book.setCategoryName(line[4].trim());
             return book;
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Error parsing number", e);
         }
-    };
+    }
 
-    public static final Function<Book, String[]> bookToStringArray = book -> {
+    @Override
+    public String[] toStringArray(Book object) {
         String[] row = new String[5];
-        row[0] = book.getId();
-        row[1] = book.getTitle();
-        row[2] = book.getPrice().toString();
-        row[3] = book.getQuantity().toString();
-        row[4] = book.getCategoryName();
+        row[0] = object.getId();
+        row[1] = object.getTitle();
+        row[2] = object.getPrice().toString();
+        row[3] = object.getQuantity().toString();
+        row[4] = object.getCategoryName();
         return row;
-    };
+    }
 }

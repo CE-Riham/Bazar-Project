@@ -327,3 +327,7 @@ k
 ;common/src/main/java/org/common/parsers/CategoryParser.java,f\d\fd72421faca9883dc7c3469dbd2241124e9221b6
 h
 8common/src/main/java/org/common/parsers/OrderParser.java,e\f\ef7566f8d966facf727168293384f56c1082e95f
+j
+:common/src/main/java/org/common/repository/Repository.java,a\9\a90ff8e613cd5ba5d7e7884330567d0b111ee5d2
+l
+<common/src/main/java/org/common/parsers/ParserInterface.java,6\9\6986a9971813b0430d85cccefa523d1fc8680b25
