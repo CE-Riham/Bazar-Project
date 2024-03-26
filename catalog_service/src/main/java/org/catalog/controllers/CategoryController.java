@@ -2,7 +2,12 @@ package org.catalog.controllers;
 
 import org.catalog.services.CategoryService;
 import com.google.gson.Gson;
+import org.common.enums.StatusResponse;
+import org.common.models.ApiResponse;
+import org.common.models.Book;
 import org.common.models.Category;
+
+import java.util.List;
 
 import static spark.Spark.*;
 
@@ -28,13 +33,14 @@ public class CategoryController {
         });
     }
 
-    private Object getAllBooksInCategory(spark.Request req, spark.Response res) {
-        return categoryService.getBooksByCategory(req.params(CATEGORY_NAME_PARAMETER));
+    private ApiResponse getAllBooksInCategory(spark.Request req, spark.Response res) {
+        List<Book> books = categoryService.getBooksByCategory(req.params(CATEGORY_NAME_PARAMETER));
+        return new ApiResponse(StatusResponse.SUCCESS, books);
     }
 
-    private String createCategory(spark.Request req, spark.Response res) {
+    private ApiResponse createCategory(spark.Request req, spark.Response res) {
         Category category = gson.fromJson(req.body(), Category.class);
         categoryService.createCategory(category);
-        return "Category was Created successfully";
+        return new ApiResponse(StatusResponse.SUCCESS);
     }
 }
