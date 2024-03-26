@@ -5,8 +5,8 @@ import org.common.models.Order;
 
 import java.util.function.Function;
 
-public class Parser {
-    private Parser() {
+public class OrderParser {
+    private OrderParser() {
         throw new UnsupportedOperationException("Parser class should not be instantiated");
     }
 

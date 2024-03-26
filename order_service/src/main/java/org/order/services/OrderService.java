@@ -3,7 +3,7 @@ package org.order.services;
 import org.common.csv.CsvReader;
 import org.common.csv.CsvWriter;
 import org.common.models.Order;
-import org.common.parsers.Parser;
+import org.common.parsers.OrderParser;
 import java.nio.file.Paths;
 import java.io.File;
 import java.util.List;
@@ -17,8 +17,8 @@ public class OrderService {
     public OrderService() {
         File ordersFile = Paths.get("data", "Orders.csv").toFile();
 
-        orderCsvReader = new CsvReader<>(ordersFile, Parser.stringArrayToOrder);
-        orderCsvWriter = new CsvWriter<>(ordersFile, Parser.orderToStringArray);
+        orderCsvReader = new CsvReader<>(ordersFile, OrderParser.stringArrayToOrder);
+        orderCsvWriter = new CsvWriter<>(ordersFile, OrderParser.orderToStringArray);
     }
 
     public List<Order> getAllOrders() {
