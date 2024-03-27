@@ -1,7 +1,7 @@
 package org.catalog.services;
 
-import org.common.enums.BookColumn;
-import org.common.enums.CategoryColumn;
+import org.common.enums.columns.BookColumn;
+import org.common.enums.columns.CategoryColumn;
 import org.common.models.Book;
 import org.common.models.Category;
 import org.common.parsers.BookParser;

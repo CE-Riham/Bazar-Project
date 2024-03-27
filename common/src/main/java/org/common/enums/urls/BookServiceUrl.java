@@ -1,4 +1,6 @@
-package org.common.enums;
+package org.common.enums.urls;
+
+import org.common.enums.Ports;
 
 public enum BookServiceUrl {
     ORDER_SERVICE_BASE("http://order_service:" + Ports.ORDER_SERVICE_PORT),

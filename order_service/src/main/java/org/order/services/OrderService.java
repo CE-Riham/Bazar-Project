@@ -1,6 +1,6 @@
 package org.order.services;
 
-import org.common.enums.OrderColumn;
+import org.common.enums.columns.OrderColumn;
 import org.common.models.Order;
 import org.common.parsers.OrderParser;
 import org.common.repository.Repository;

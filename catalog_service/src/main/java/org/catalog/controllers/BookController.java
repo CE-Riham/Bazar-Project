@@ -2,7 +2,7 @@ package org.catalog.controllers;
 
 import com.google.gson.Gson;
 import org.catalog.services.BookService;
-import org.common.enums.BookServiceUrl;
+import org.common.enums.urls.BookServiceUrl;
 import org.common.enums.StatusResponse;
 import org.common.models.ApiResponse;
 import org.common.models.Book;

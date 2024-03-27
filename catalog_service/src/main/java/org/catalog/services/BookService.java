@@ -1,6 +1,6 @@
 package org.catalog.services;
 
-import org.common.enums.BookColumn;
+import org.common.enums.columns.BookColumn;
 import org.common.models.Book;
 import org.common.parsers.BookParser;
 import org.common.repository.Repository;
