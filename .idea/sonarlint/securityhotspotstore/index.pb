@@ -224,12 +224,6 @@ S
 #catalog_service/data/Categories.csv,8\1\8180f488cd3b1a5a47beebf8666630b06533de6f
 }
 Mcatalog_service/src/main/java/org/catalog/controllers/CategoryController.java,1\3\13e7919677feefa0ed0d0b712780db3f211a40c2
-g
-7order_service/src/main/java/org/order/models/Order.java,c\c\ccd24a052cd5fff22ba1e8710e23283ffb26aed2
-n
->catalog_service/src/main/java/org/catalog/models/Category.java,2\1\211391701013bbc63a2d4b905765d841ac0025d0
-j
-:catalog_service/src/main/java/org/catalog/models/Book.java,a\f\af719eff95d6d1bd6bdcf64b22d2edaf2713392e
 s
 Ccatalog_service/src/main/java/org/catalog/services/BookService.java,c\0\c070545e1455ea0793b57a76619d233c6fb9eeb7
 p
@@ -240,12 +234,6 @@ v
 Forder_service/src/main/java/org/order/controllers/OrderController.java,a\f\af161c759deb8c29bb46b83686e0afb2e43364c9
 y
 Icatalog_service/src/main/java/org/catalog/controllers/BookController.java,8\7\8781a96792e61c2420c98c22213431ceb59fa7b9
-j
-:order_service/src/main/java/org/order/utils/CsvReader.java,5\4\545475439f8f8d310fd7cc47f7f8bbcf0c53f3e1
-g
-7order_service/src/main/java/org/order/utils/Parser.java,d\a\da41b20fd05a69974f4f13760826271b3650196e
-j
-:order_service/src/main/java/org/order/utils/CsvWriter.java,c\8\c8c92ff1dbb8611d41f7c9a2375d28f23ba6265d
 Å
 Q.idea/sonarlint/securityhotspotstore/a/f/af719eff95d6d1bd6bdcf64b22d2edaf2713392e,f\c\fca54c5b1361afd91da198ad0432a77b445e3dd9
 Å
@@ -266,8 +254,6 @@ Q.idea/sonarlint/securityhotspotstore/1/3/13e7919677feefa0ed0d0b712780db3f211a40
 Q.idea/sonarlint/securityhotspotstore/c/c/ccd24a052cd5fff22ba1e8710e23283ffb26aed2,7\8\783f97d68975ca28ab4748298c3cc857fd99b8b7
 Å
 Q.idea/sonarlint/securityhotspotstore/6/b/6b78a002fc635fe421d2aefd902d0cf4c9a940c8,6\1\61154debe36d73b99f63142da7916473a4b25373
-j
-:catalog_service/src/main/java/org/catalog/dto/BookDTO.java,c\9\c95a71b1641567d2391ce2fd6ac5e792af611744
 B
 docker-compose.yml,3\5\35b8c13cf2eb2a194eada000eb310d65aed53b2a
 J
@@ -280,8 +266,6 @@ d
 4common/src/main/java/org/common/models/Category.java,3\e\3e97a7d443096f667739ca025e55f5a2bfd175bc
 a
 1common/src/main/java/org/common/models/Order.java,6\5\65d63c364f083eb827c360188f1d1c1b41d88f34
-c
-3common/src/main/java/org/common/parsers/Parser.java,8\3\835b5206625f8d2123143b697d40f7e3a9a9a22d
 b
 2common/src/main/java/org/common/csv/CsvReader.java,8\a\8ad4f4af4dc9340f82e22a9cd34c262bf66b4a78
 b
@@ -447,3 +431,11 @@ g
 7common/src/main/java/org/common/models/ApiResponse.java,3\d\3d26e005afef3c6dd0f8fef7fa118e67e724dbe5
 i
 9common/src/main/java/org/common/enums/StatusResponse.java,b\c\bc1a610630e074e2e0801535014af0a5e38bfe6b
+e
+5common/src/main/java/org/common/enums/ServiceUrl.java,7\d\7de161b8fc390ee99e8aeefbf83fb932c06c02f1
+i
+9common/src/main/java/org/common/enums/CategoryColumn.java,7\8\78723b5075f58e368f6910499b13bfbd5c0f1cf4
+`
+0common/src/main/java/org/common/enums/Ports.java,a\5\a560725f8084a84c84dc4c4d5dbb3f4dad9d3727
+i
+9common/src/main/java/org/common/enums/BookServiceUrl.java,a\7\a795e00e3bf7f1fe34b0fa4b67eabd2e10c60044

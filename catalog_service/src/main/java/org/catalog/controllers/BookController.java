@@ -2,6 +2,7 @@ package org.catalog.controllers;
 
 import com.google.gson.Gson;
 import org.catalog.services.BookService;
+import org.common.enums.BookServiceUrl;
 import org.common.enums.StatusResponse;
 import org.common.models.ApiResponse;
 import org.common.models.Book;
@@ -13,8 +14,7 @@ public class BookController {
 
     private final BookService bookService;
     private final Gson gson = new Gson();
-    private static final String BOOK_ID_PATH = "/:book-id";
-    private static final String BOOK_ID_PARAMETER = ":book-id";
+    private static final String BOOK_ID_PARAMETER = BookServiceUrl.BOOK_ID_PARAMETER.getUrl();
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
@@ -22,15 +22,15 @@ public class BookController {
     }
 
     private void setupRoutes() {
-        path("/api/book", () -> {
-            get("", this::getAllBooks, gson::toJson);
-            get(BOOK_ID_PATH, this::getBookByTd, gson::toJson);
+        path(BookServiceUrl.BOOK_API_PATH.getUrl(), () -> {
+            get(BookServiceUrl.GET_ALL_BOOKS_PATH.getUrl(), this::getAllBooks, gson::toJson);
+            get(BookServiceUrl.GET_BOOK_BY_ID_PATH.getUrl(), this::getBookByTd, gson::toJson);
         });
 
-        path("/api/admin/book", () -> {
-            post("", this::createBook, gson::toJson);
-            put(BOOK_ID_PATH, this::updateBookById, gson::toJson);
-            delete(BOOK_ID_PATH, this::deleteBookById, gson::toJson);
+        path(BookServiceUrl.BOOK_ADMIN_API_PATH.getUrl(), () -> {
+            post(BookServiceUrl.CREATE_BOOK_PATH.getUrl(), this::createBook, gson::toJson);
+            put(BookServiceUrl.UPDATE_BOOK_BY_ID_PATH.getUrl(), this::updateBookById, gson::toJson);
+            delete(BookServiceUrl.DELETE_BOOK_BY_ID_PATH.getUrl(), this::deleteBookById, gson::toJson);
         });
     }
 
