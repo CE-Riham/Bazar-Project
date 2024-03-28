@@ -3,7 +3,7 @@ package org.catalog.controllers;
 import com.google.gson.Gson;
 import org.catalog.services.CategoryService;
 import org.common.enums.StatusResponse;
-import org.common.enums.urls.CatalogServiceUrl;
+import org.common.enums.urls.CategoryUrl;
 import org.common.models.Book;
 import org.common.models.Category;
 import org.common.utils.ApiResponse;
@@ -17,7 +17,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
     private final Gson gson = new Gson();
-    private static final String CATEGORY_ID_PARAMETER = CatalogServiceUrl.CATEGORY_ID_PARAMETER.getUrl();
+    private static final String CATEGORY_ID_PARAMETER = CategoryUrl.CATEGORY_ID_PARAMETER.getUrl();
 
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
@@ -25,11 +25,11 @@ public class CategoryController {
     }
 
     private void setupRoutes() {
-        path(CatalogServiceUrl.CATEGORY_API_PATH.getUrl(), () -> {
-            get(CatalogServiceUrl.GET_ALL_BOOKS_BY_CATEGORY_ID.getUrl(), this::getAllBooksInCategory, gson::toJson);
+        path(CategoryUrl.CATEGORY_API_PATH.getUrl(), () -> {
+            get(CategoryUrl.GET_ALL_BOOKS_BY_CATEGORY_ID.getUrl(), this::getAllBooksInCategory, gson::toJson);
         });
-        path(CatalogServiceUrl.CATEGORY_ADMIN_API_PATH.getUrl(), () -> {
-            post(CatalogServiceUrl.CREATE_CATEGORY_PATH.getUrl(), this::createCategory, gson::toJson);
+        path(CategoryUrl.CATEGORY_ADMIN_API_PATH.getUrl(), () -> {
+            post(CategoryUrl.CREATE_CATEGORY_PATH.getUrl(), this::createCategory, gson::toJson);
         });
     }
 

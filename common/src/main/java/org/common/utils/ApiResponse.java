@@ -1,4 +1,4 @@
-package org.common.models;
+package org.common.utils;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

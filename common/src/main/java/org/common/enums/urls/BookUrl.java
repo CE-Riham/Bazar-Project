@@ -2,8 +2,7 @@ package org.common.enums.urls;
 
 import org.common.enums.Ports;
 
-public enum BookServiceUrl {
-    ORDER_SERVICE_BASE("http://order_service:" + Ports.ORDER_SERVICE_PORT),
+public enum BookUrl {
     BOOK_API_PATH("/api/book"),
     BOOK_ADMIN_API_PATH("/api/admin/book"),
     BOOK_ID_PARAMETER(":book-id"),
@@ -14,7 +13,7 @@ public enum BookServiceUrl {
     DELETE_BOOK_BY_ID_PATH("/" + BOOK_ID_PARAMETER.getUrl());
     private final String url;
 
-    BookServiceUrl(String url) {
+    BookUrl(String url) {
         this.url = url;
     }
 

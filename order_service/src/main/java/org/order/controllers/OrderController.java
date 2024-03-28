@@ -2,7 +2,7 @@ package org.order.controllers;
 
 import com.google.gson.Gson;
 import org.common.enums.StatusResponse;
-import org.common.models.ApiResponse;
+import org.common.utils.ApiResponse;
 import org.common.models.Order;
 import org.order.services.OrderService;
 import spark.Request;
