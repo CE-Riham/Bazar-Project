@@ -31,8 +31,10 @@ public class CategoryService {
         return categoryRepository.getObjectBy(CategoryColumn.ID.toString(), id);
     }
 
-    public List<Book> getBooksByCategory(String categoryName) {
-        return bookRepository.getObjectsBy(BookColumn.CATEGORY.toString(), categoryName);
+    public List<Book> getBooksByCategory(String categoryID) {
+        // get category name for categoryID
+        Category category = categoryRepository.getObjectBy(CategoryColumn.ID.toString(), categoryID);
+        return bookRepository.getObjectsBy(BookColumn.CATEGORY.toString(), category.getName());
     }
 
     public void createCategory(Category newCategory) {
