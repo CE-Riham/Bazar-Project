@@ -405,3 +405,5 @@ g
 7common/src/main/java/org/common/enums/urls/BookUrl.java,4\2\4259f44c7ae08241342d68e3f42789d8417fb6c9
 k
 ;common/src/main/java/org/common/enums/urls/CategoryUrl.java,1\9\19d4faf78d04e917c66d4eb110ebb69f22abcaed
+e
+5common/src/main/java/org/common/enums/StatusCode.java,a\a\aa4dd65400ba129e84eef6a766fad876a34b08c2

@@ -1,8 +1,7 @@
 package org.order.controllers;
 
 import com.google.gson.Gson;
-import org.common.enums.StatusResponse;
-import org.common.utils.ApiResponse;
+import org.common.enums.StatusCode;
 import org.common.models.Order;
 import org.order.services.OrderService;
 import spark.Request;
@@ -34,31 +33,31 @@ public class OrderController {
     }
 
     private ApiResponse getAllOrders(spark.Request req, spark.Response res) {
-        return new ApiResponse(StatusResponse.SUCCESS, orderService.getAllOrders());
+        return new ApiResponse(StatusCode.SUCCESS, orderService.getAllOrders());
     }
 
     private ApiResponse getOrderById(spark.Request req, spark.Response res) {
         String orderId = req.params(ODER_ID_PARAMETER);
-        return new ApiResponse(StatusResponse.SUCCESS, orderService.getOrderById(orderId));
+        return new ApiResponse(StatusCode.SUCCESS, orderService.getOrderById(orderId));
     }
 
     private ApiResponse createOrder(spark.Request req, spark.Response res) {
         Order newOrder = gson.fromJson(req.body(), Order.class);
         orderService.createOrder(newOrder);
-        return new ApiResponse(StatusResponse.SUCCESS);
+        return new ApiResponse(StatusCode.SUCCESS);
     }
 
     private ApiResponse updateOrder(Request req, Response res) {
         Order newOrder = gson.fromJson(req.body(), Order.class);
         newOrder.setId(req.params(ODER_ID_PARAMETER));
         orderService.updateOrderById(req.params(ODER_ID_PARAMETER), newOrder);
-        return new ApiResponse(StatusResponse.SUCCESS);
+        return new ApiResponse(StatusCode.SUCCESS);
     }
 
     private ApiResponse deleteOrder(Request req, Response res) {
         String orderId = req.params(ODER_ID_PARAMETER);
         orderService.deleteOrderById(orderId);
-        return new ApiResponse(StatusResponse.SUCCESS);
+        return new ApiResponse(StatusCode.SUCCESS);
     }
 
 }

@@ -3,13 +3,9 @@ package org.catalog.controllers;
 import com.google.gson.Gson;
 import lombok.extern.java.Log;
 import org.catalog.services.CategoryService;
-import org.common.enums.StatusResponse;
+import org.common.enums.StatusCode;
 import org.common.enums.urls.CategoryUrl;
-import org.common.models.Book;
 import org.common.models.Category;
-import org.common.utils.ApiResponse;
-
-import java.util.List;
 
 import static spark.Spark.*;
 
@@ -34,16 +30,33 @@ public class CategoryController {
         });
     }
 
-    private ApiResponse getAllBooksInCategory(spark.Request req, spark.Response res) {
-        log.info("get all books in category method");
-        List<Book> books = categoryService.getBooksByCategory(req.params(CATEGORY_ID_PARAMETER));
-        return new ApiResponse(StatusResponse.SUCCESS, books);
+    private Object checkCategoryExists(String categoryId, spark.Response res) {
+        Category category = categoryService.getCategoryById(categoryId);
+        if (category != null) {
+            res.status(StatusCode.OK.getCode());
+            return category;
+        } else {
+            res.status(StatusCode.NOT_FOUND.getCode());
+            return String.format("Category with id: %s is not found", categoryId);
+        }
     }
 
-    private ApiResponse createCategory(spark.Request req, spark.Response res) {
+    private Object getAllBooksInCategory(spark.Request req, spark.Response res) {
+        log.info("get all books in category method");
+        String categoryId = req.params(CATEGORY_ID_PARAMETER);
+        checkCategoryExists(categoryId, res);
+        if (res.status() == 200) {
+            return categoryService.getBooksByCategory(categoryId);
+        }
+        res.status(StatusCode.NOT_FOUND.getCode());
+        return "Category not found";
+    }
+
+    private String createCategory(spark.Request req, spark.Response res) {
         log.info("create new category method");
         Category category = gson.fromJson(req.body(), Category.class);
         categoryService.createCategory(category);
-        return new ApiResponse(StatusResponse.SUCCESS);
+        res.status(StatusCode.CREATED.getCode());
+        return "Category was created successfully.";
     }
 }

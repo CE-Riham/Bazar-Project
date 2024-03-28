@@ -9,7 +9,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.common.enums.StatusResponse;
+import org.common.enums.StatusCode;
 
 /**
  * This class provides utility methods for sending HTTP requests.
@@ -36,9 +36,11 @@ public class HttpRequestSender {
             // Execute the request and return the response body
             return client.execute(request, httpResponse -> EntityUtils.toString(httpResponse.getEntity()));
         } catch (Exception e) {
-            ApiResponse apiResponse = new ApiResponse(StatusResponse.ERROR);
-            apiResponse.setMessage(e.getMessage());
-            return new Gson().toJson(apiResponse);
+//            Object apiResponse = new Object();
+//            apiResponse.setMessage(e.getMessage());
+//            return new Gson().toJson(apiResponse);
+            System.out.println("Error");
+            return "";
         }
     }
 
@@ -58,9 +60,11 @@ public class HttpRequestSender {
             return client.execute(request, httpResponse -> EntityUtils.toString(httpResponse.getEntity()));
 
         } catch (Exception e) {
-            ApiResponse apiResponse = new ApiResponse(StatusResponse.ERROR);
-            apiResponse.setMessage(e.getMessage());
-            return new Gson().toJson(apiResponse);
+//            ApiResponse apiResponse = new ApiResponse(StatusCode.ERROR);
+//            apiResponse.setMessage(e.getMessage());
+//            return new Gson().toJson(apiResponse);
+            System.out.println("Error");
+            return "";
         }
     }
 }

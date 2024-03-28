@@ -1,40 +1,30 @@
 package org.catalog.controllers;
 
 import com.google.gson.Gson;
+import lombok.extern.java.Log;
 import org.catalog.services.BookService;
-import org.common.enums.StatusResponse;
+import org.common.enums.StatusCode;
 import org.common.enums.urls.BookUrl;
 import org.common.models.Book;
-import org.common.utils.ApiResponse;
 
 import static spark.Spark.*;
 
-/**
- * This class is responsible for handling all the HTTP requests related to the Book entity.
- * It uses Spark framework to define and handle routes.
- */
+@Log
 public class BookController {
 
     private final BookService bookService;
     private final Gson gson = new Gson();
     private static final String BOOK_ID_PARAMETER = BookUrl.BOOK_ID_PARAMETER.getUrl();
 
-    /**
-     * Constructor for the BookController class.
-     * @param bookService The service to be used for handling book related operations.
-     */
     public BookController(BookService bookService) {
         this.bookService = bookService;
         setupRoutes();
     }
 
-    /**
-     * This method sets up the routes for handling HTTP requests.
-     */
     private void setupRoutes() {
         path(BookUrl.BOOK_API_PATH.getUrl(), () -> {
             get(BookUrl.GET_ALL_BOOKS_PATH.getUrl(), this::getAllBooks, gson::toJson);
-            get(BookUrl.GET_BOOK_BY_ID_PATH.getUrl(), this::getBookByTd, gson::toJson);
+            get(BookUrl.GET_BOOK_BY_ID_PATH.getUrl(), this::getBookById, gson::toJson);
         });
 
         path(BookUrl.BOOK_ADMIN_API_PATH.getUrl(), () -> {
@@ -44,61 +34,60 @@ public class BookController {
         });
     }
 
-    /**
-     * This method handles the GET request to fetch all books.
-     * @param req The HTTP request.
-     * @param res The HTTP response.
-     * @return ApiResponse object containing the status and the list of all books.
-     */
-    private ApiResponse getAllBooks(spark.Request req, spark.Response res) {
-        return new ApiResponse(StatusResponse.SUCCESS, bookService.getAllBooks());
+    private Object checkBookExists(String bookId, spark.Response res) {
+        Book book = bookService.getBookById(bookId);
+        if (book != null) {
+            res.status(StatusCode.OK.getCode());
+            return book;
+        } else {
+            res.status(StatusCode.NOT_FOUND.getCode());
+            return String.format("Book with id: %s is not found", bookId);
+        }
     }
 
-    /**
-     * This method handles the GET request to fetch a book by its ID.
-     * @param req The HTTP request.
-     * @param res The HTTP response.
-     * @return ApiResponse object containing the status and the requested book.
-     */
-    private ApiResponse getBookByTd(spark.Request req, spark.Response res) {
+    private Object getAllBooks(spark.Request req, spark.Response res) {
+        log.info("get all books method");
+        res.status(StatusCode.OK.getCode());
+        return bookService.getAllBooks();
+    }
+
+    private Object getBookById(spark.Request req, spark.Response res) {
+        log.info("get book by id method");
         String bookId = req.params(BOOK_ID_PARAMETER);
-        return new ApiResponse(StatusResponse.SUCCESS, bookService.getBookById(bookId));
+        return checkBookExists(bookId, res);
     }
 
-    /**
-     * This method handles the POST request to create a new book.
-     * @param req The HTTP request.
-     * @param res The HTTP response.
-     * @return ApiResponse object containing the status of the operation.
-     */
-    private ApiResponse createBook(spark.Request req, spark.Response res) {
+    private String createBook(spark.Request req, spark.Response res) {
+        log.info("create new book method");
         Book newBook = gson.fromJson(req.body(), Book.class);
         bookService.createBook(newBook);
-        return new ApiResponse(StatusResponse.SUCCESS);
+        res.status(StatusCode.CREATED.getCode());
+        return "Book was created successfully.";
     }
 
-    /**
-     * This method handles the PUT request to update a book by its ID.
-     * @param req The HTTP request.
-     * @param res The HTTP response.
-     * @return ApiResponse object containing the status of the operation.
-     */
-    private ApiResponse updateBookById(spark.Request req, spark.Response res) {
-        Book newBook = gson.fromJson(req.body(), Book.class);
-        newBook.setId(req.params(BOOK_ID_PARAMETER));
-        bookService.updateBookById(req.params(BOOK_ID_PARAMETER), newBook);
-        return new ApiResponse(StatusResponse.SUCCESS);
-    }
-
-    /**
-     * This method handles the DELETE request to delete a book by its ID.
-     * @param req The HTTP request.
-     * @param res The HTTP response.
-     * @return ApiResponse object containing the status of the operation.
-     */
-    private ApiResponse deleteBookById(spark.Request req, spark.Response res) {
+    private String updateBookById(spark.Request req, spark.Response res) {
+        log.info("update book method");
         String bookId = req.params(BOOK_ID_PARAMETER);
-        bookService.deleteBookById(bookId);
-        return new ApiResponse(StatusResponse.SUCCESS);
+        Object checkResult =  checkBookExists(bookId, res);
+        if (res.status() == 200) {
+            Book newBook = gson.fromJson(req.body(), Book.class);
+            newBook.setId(bookId);
+            bookService.updateBookById(req.params(BOOK_ID_PARAMETER), newBook);
+            return "Book was updated successfully.";
+        }
+        return (String) checkResult;
     }
+
+    private String deleteBookById(spark.Request req, spark.Response res) {
+        log.info("delete book method");
+        String bookId = req.params(BOOK_ID_PARAMETER);
+        Object checkResult = checkBookExists(bookId, res);
+        if (res.status() == 200) {
+            bookService.deleteBookById(bookId);
+            return "Book was deleted successfully.";
+        }
+        return (String) checkResult;
+    }
+
+
 }
