@@ -1,6 +1,5 @@
 package org.common.enums.urls;
 
-import org.common.enums.Ports;
 
 public enum BookUrl {
     BOOK_API_PATH("/api/book"),

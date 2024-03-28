@@ -1,9 +1,5 @@
 
 N
-java:S1602",Remove useless curly braces around statement(èêÄãşÿÿÿÿ8Šç˜æç1
+java:S1602",Remove useless curly braces around statement(èêÄãşÿÿÿÿ8…İ¬˜è1
 I
-java:S1602",Remove useless curly braces around statement(ôé§8Œç˜æç1
-G
-java:S1172$"*Remove this unused method parameter "res".(†ªèŞ8¿¿š•è1
-G
-java:S1172)"*Remove this unused method parameter "res".(ÇËéÅ8Á¿š•è1
+java:S1602 ",Remove useless curly braces around statement(ôé§8†İ¬˜è1

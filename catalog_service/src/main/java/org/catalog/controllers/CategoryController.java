@@ -1,6 +1,7 @@
 package org.catalog.controllers;
 
 import com.google.gson.Gson;
+import lombok.extern.java.Log;
 import org.catalog.services.CategoryService;
 import org.common.enums.StatusResponse;
 import org.common.enums.urls.CategoryUrl;
@@ -12,7 +13,7 @@ import java.util.List;
 
 import static spark.Spark.*;
 
-
+@Log
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -34,11 +35,13 @@ public class CategoryController {
     }
 
     private ApiResponse getAllBooksInCategory(spark.Request req, spark.Response res) {
+        log.info("get all books in category method");
         List<Book> books = categoryService.getBooksByCategory(req.params(CATEGORY_ID_PARAMETER));
         return new ApiResponse(StatusResponse.SUCCESS, books);
     }
 
     private ApiResponse createCategory(spark.Request req, spark.Response res) {
+        log.info("create new category method");
         Category category = gson.fromJson(req.body(), Category.class);
         categoryService.createCategory(category);
         return new ApiResponse(StatusResponse.SUCCESS);
