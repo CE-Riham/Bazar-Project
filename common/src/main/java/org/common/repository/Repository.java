@@ -41,11 +41,11 @@ public class Repository<T> {
         return parser.toObject(lines.get(0));
     }
 
-    public void add(T object){
+    public void add(T object) {
         csvWriter.insertLine(parser.toStringArray(object));
     }
 
-    public void deleteObjectsBy(String columnName, String value){
+    public void deleteObjectsBy(String columnName, String value) {
         csvWriter.deleteObjectsWithCondition(columnName, value);
     }
 
@@ -75,6 +75,21 @@ public class Repository<T> {
         for (T item : items) {
             add(item);
         }
+    }
+
+    public void updateSpecificField(String columnName, String oldValue, String newValue) throws Exception {
+        // find column index
+        int index = csvReader.getHeaderIndex(columnName);
+        if (index == -1) {
+            throw new Exception("Invalid column name");
+        }
+
+        List<String[]> lines = csvReader.getAll();
+        for (String[] line : lines) {
+            if (line[index].equals(oldValue))
+                line[index] = newValue;
+        }
+        csvWriter.clearAndInsertLines(lines);
     }
 
 }

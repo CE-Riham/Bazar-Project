@@ -33,7 +33,7 @@ public class CsvWriter {
     }
 
     public void clearFile() {
-        String[] header = new CsvReader(path).getHeader();
+        String[] header = new CsvReader(path).getHeaders();
         openWriter(false);
         closeWriter();
         insertLine(header);
@@ -43,7 +43,7 @@ public class CsvWriter {
         openWriter(true);
         try {
             for (int i = 0; i < item.length; i++) {
-                writer.write(item[i].trim() + (i == item.length - 1 ? "\n" : ", "));
+                writer.write((item[i] == null ? "" : item[i].trim()) + (i == item.length - 1 ? "\n" : ", "));
             }
             writer.flush(); // Flush changes to file
             closeWriter();
@@ -52,15 +52,18 @@ public class CsvWriter {
         }
     }
 
-    public void deleteObjectsWithCondition(String columnName, String value) {
-        // Read all lines from the CSV file into a list where columnName not equal value
-        List<String[]> lines = new CsvReader(path).getLinesWithCondition(columnName, value, false);
-        // Clear the file to write the remaining rows back
+    public void clearAndInsertLines(List<String[]> lines) {
         clearFile();
         for (String[] line : lines)
             insertLine(line);
     }
 
+    public void deleteObjectsWithCondition(String columnName, String value) {
+        // Read all lines from the CSV file into a list where columnName not equal value
+        List<String[]> lines = new CsvReader(path).getLinesWithCondition(columnName, value, false);
+        // Clear the file to write the remaining rows back
+        clearAndInsertLines(lines);
+    }
 
 
 }

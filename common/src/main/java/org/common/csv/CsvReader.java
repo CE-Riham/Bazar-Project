@@ -18,13 +18,24 @@ public class CsvReader{
     private static final String DELIMITER = ",";
     private static final String ERROR_MSG = "Failed to read orders from CSV: %s";
 
-    public String[] getHeader() {
+    public String[] getHeaders() {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             return br.readLine().split(DELIMITER);
         } catch (IOException e) {
             log.error(String.format(ERROR_MSG, e.getMessage()));
         }
         return new String[0];
+    }
+
+    public int getHeaderIndex(String columnName){
+        String[] headers = getHeaders();
+        int index = -1;
+        for (int i = 0; i < headers.length; i++)
+            if (headers[i].equals(columnName)) {
+                index = i;
+                break;
+            }
+        return index;
     }
 
     public List<String[]> getAll() {
