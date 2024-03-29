@@ -1,6 +1,5 @@
 package org.common.utils;
 
-import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -9,11 +8,10 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.common.enums.StatusCode;
 
 /**
- * This class provides utility methods for sending HTTP requests.
- * It includes methods for sending GET and POST requests.
+ * This class is used to send HTTP requests.
+ * It provides methods to send GET and POST requests.
  */
 public class HttpRequestSender {
 
@@ -25,34 +23,29 @@ public class HttpRequestSender {
     }
 
     /**
-     * Sends a GET request to the specified URL and returns the response body as a string.
-     * If an exception occurs during the request, it returns a JSON string with an error message.
+     * Sends a GET request to the specified URL and returns the response body.
+     *
      * @param url The URL to send the GET request to.
-     * @return The response body as a string.
+     * @return The response body as a string, or a MessageResponse object if an exception occurred.
      */
-    public static String sendGetRequest(String url) {
+    public static Object sendGetRequest(String url) {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpGet request = new HttpGet(url);
             // Execute the request and return the response body
             return client.execute(request, httpResponse -> EntityUtils.toString(httpResponse.getEntity()));
         } catch (Exception e) {
-//            Object apiResponse = new Object();
-//            apiResponse.setMessage(e.getMessage());
-//            return new Gson().toJson(apiResponse);
-            System.out.println("Error");
-            return "";
+            return new MessageResponse("Can't send GET request: " + e.getMessage());
         }
     }
 
     /**
-     * Sends a POST request to the specified URL with the provided JSON string as the request body.
-     * Returns the response body as a string.
-     * If an exception occurs during the request, it returns a JSON string with an error message.
-     * @param url The URL to send the POST request to.
-     * @param json The JSON string to include in the request body.
-     * @return The response body as a string.
+     * Sends a POST request to the specified URL with the provided JSON body and returns the response body.
+     *
+     * @param url  The URL to send the POST request to.
+     * @param json The JSON body to include in the POST request.
+     * @return The response body as a string, or a MessageResponse object if an exception occurred.
      */
-    public static String sendPostRequest(String url, String json) {
+    public static Object sendPostRequest(String url, String json) {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost request = new HttpPost(url);
             HttpEntity stringEntity = new StringEntity(json, ContentType.APPLICATION_JSON);
@@ -60,11 +53,7 @@ public class HttpRequestSender {
             return client.execute(request, httpResponse -> EntityUtils.toString(httpResponse.getEntity()));
 
         } catch (Exception e) {
-//            ApiResponse apiResponse = new ApiResponse(StatusCode.ERROR);
-//            apiResponse.setMessage(e.getMessage());
-//            return new Gson().toJson(apiResponse);
-            System.out.println("Error");
-            return "";
+            return new MessageResponse("Can't send POST request: " + e.getMessage());
         }
     }
 }
