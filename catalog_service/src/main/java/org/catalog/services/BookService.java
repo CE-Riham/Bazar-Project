@@ -24,13 +24,15 @@ public class BookService {
         return bookRepository.getObjectBy(BookColumn.ID.toString(), id);
     }
 
-    public void createBook(Book newBook) {
+    public Book createBook(Book newBook) {
         newBook.setId(UUID.randomUUID().toString());
         bookRepository.add(newBook);
+        return newBook;
     }
 
-    public void updateBookById(String id, Book newBook) {
+    public Book updateBookById(String id, Book newBook) {
         bookRepository.updateObjectsBy(BookColumn.ID.toString(), id, newBook);
+        return getBookById(id);
     }
 
     public void deleteBookById(String id) {

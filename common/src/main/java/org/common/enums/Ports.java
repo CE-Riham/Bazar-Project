@@ -21,9 +21,9 @@ public enum Ports {
 
     /**
      * This method returns the port associated with the service.
-     * @return The port as a string.
+     * @return The port as an Integer.
      */
-    public String getPort() {
-        return port;
+    public Integer getPort() {
+        return Integer.parseInt(port);
     }
 }

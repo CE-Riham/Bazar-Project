@@ -25,13 +25,15 @@ public class OrderService {
         return orderRepository.getObjectBy(OrderColumn.ID.toString(), orderId);
     }
 
-    public void createOrder(Order newOrder) {
+    public Order createOrder(Order newOrder) {
         newOrder.setId(UUID.randomUUID().toString());
         orderRepository.add(newOrder);
+        return newOrder;
     }
 
-    public void updateOrderById(String id, Order newOrder) {
+    public Order updateOrderById(String id, Order newOrder) {
         orderRepository.updateObjectsBy(OrderColumn.ID.toString(), id, newOrder);
+        return getOrderById(id);
     }
 
     public void deleteOrderById(String id) {

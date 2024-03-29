@@ -17,7 +17,7 @@ public class Main {
      * The port number on which the server will run.
      * It is retrieved from the Ports enum.
      */
-    private static final Integer PORT = Integer.parseInt(Ports.ORDER_SERVICE_PORT.getPort());
+    private static final Integer PORT = Ports.ORDER_SERVICE_PORT.getPort();
 
     /**
      * The type of the response that will be returned by the server.

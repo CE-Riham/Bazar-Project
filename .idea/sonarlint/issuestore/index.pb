@@ -407,3 +407,9 @@ k
 ;common/src/main/java/org/common/enums/urls/CategoryUrl.java,1\9\19d4faf78d04e917c66d4eb110ebb69f22abcaed
 e
 5common/src/main/java/org/common/enums/StatusCode.java,a\a\aa4dd65400ba129e84eef6a766fad876a34b08c2
+`
+0common/src/main/java/org/common/utils/Error.java,5\7\57cda1f76fa1291ceb29127efba83734735e612f
+h
+8common/src/main/java/org/common/utils/ErrorResponse.java,0\c\0c9df44e9d2d80228b39c5d5255bfb46dfec05ef
+j
+:common/src/main/java/org/common/utils/MessageResponse.java,e\b\eba63183a9b7a7532c29035f96b4184205f9db2c

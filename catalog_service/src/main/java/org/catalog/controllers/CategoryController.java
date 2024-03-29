@@ -6,6 +6,7 @@ import org.catalog.services.CategoryService;
 import org.common.enums.StatusCode;
 import org.common.enums.urls.CategoryUrl;
 import org.common.models.Category;
+import org.common.utils.MessageResponse;
 
 import static spark.Spark.*;
 
@@ -49,14 +50,14 @@ public class CategoryController {
             return categoryService.getBooksByCategory(categoryId);
         }
         res.status(StatusCode.NOT_FOUND.getCode());
-        return "Category not found";
+        return new MessageResponse("Category not found");
     }
 
-    private String createCategory(spark.Request req, spark.Response res) {
+    private Object createCategory(spark.Request req, spark.Response res) {
         log.info("create new category method");
         Category category = gson.fromJson(req.body(), Category.class);
-        categoryService.createCategory(category);
+        Category category1 = categoryService.createCategory(category);
         res.status(StatusCode.CREATED.getCode());
-        return "Category was created successfully.";
+        return category1;
     }
 }

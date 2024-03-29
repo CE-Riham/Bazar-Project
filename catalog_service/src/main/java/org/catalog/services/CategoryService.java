@@ -37,8 +37,9 @@ public class CategoryService {
         return bookRepository.getObjectsBy(BookColumn.CATEGORY.toString(), category.getName());
     }
 
-    public void createCategory(Category newCategory) {
+    public Category createCategory(Category newCategory) {
         newCategory.setId(UUID.randomUUID().toString());
         categoryRepository.add(newCategory);
+        return newCategory;
     }
 }

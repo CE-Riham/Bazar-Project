@@ -6,6 +6,7 @@ import org.catalog.services.BookService;
 import org.common.enums.StatusCode;
 import org.common.enums.urls.BookUrl;
 import org.common.models.Book;
+import org.common.utils.MessageResponse;
 
 import static spark.Spark.*;
 
@@ -57,36 +58,35 @@ public class BookController {
         return checkBookExists(bookId, res);
     }
 
-    private String createBook(spark.Request req, spark.Response res) {
+    private Object createBook(spark.Request req, spark.Response res) {
         log.info("create new book method");
         Book newBook = gson.fromJson(req.body(), Book.class);
-        bookService.createBook(newBook);
+        Book book = bookService.createBook(newBook);
         res.status(StatusCode.CREATED.getCode());
-        return "Book was created successfully.";
+        return book;
     }
 
-    private String updateBookById(spark.Request req, spark.Response res) {
+    private Object updateBookById(spark.Request req, spark.Response res) {
         log.info("update book method");
         String bookId = req.params(BOOK_ID_PARAMETER);
         Object checkResult =  checkBookExists(bookId, res);
         if (res.status() == 200) {
             Book newBook = gson.fromJson(req.body(), Book.class);
             newBook.setId(bookId);
-            bookService.updateBookById(req.params(BOOK_ID_PARAMETER), newBook);
-            return "Book was updated successfully.";
+            return bookService.updateBookById(bookId, newBook);
         }
-        return (String) checkResult;
+        return new MessageResponse((String) checkResult);
     }
 
-    private String deleteBookById(spark.Request req, spark.Response res) {
+    private Object deleteBookById(spark.Request req, spark.Response res) {
         log.info("delete book method");
         String bookId = req.params(BOOK_ID_PARAMETER);
         Object checkResult = checkBookExists(bookId, res);
         if (res.status() == 200) {
             bookService.deleteBookById(bookId);
-            return "Book was deleted successfully.";
+            return new MessageResponse("Book was deleted successfully.");
         }
-        return (String) checkResult;
+        return new MessageResponse((String) checkResult);
     }
 
 

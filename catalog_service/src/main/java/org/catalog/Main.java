@@ -17,7 +17,7 @@ import static spark.Spark.*;
 public class Main {
 
     private static final String JSON_TYPE = "application/json";
-    private static final Integer PORT = Integer.parseInt(Ports.CATALOG_SERVICE_PORT.getPort());
+    private static final Integer PORT = Ports.CATALOG_SERVICE_PORT.getPort();
 
     /**
      * The main method for the Catalog service.
