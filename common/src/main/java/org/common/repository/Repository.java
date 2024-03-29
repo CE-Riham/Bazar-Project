@@ -77,17 +77,18 @@ public class Repository<T> {
         }
     }
 
-    public void updateSpecificField(String columnName, String oldValue, String newValue) throws Exception {
+    public void updateSpecificField(String keyColumnName, String keyValue, String updatedColumnName, String newValue) throws Exception {
         // find column index
-        int index = csvReader.getHeaderIndex(columnName);
-        if (index == -1) {
+        int keyColumnIndex = csvReader.getHeaderIndex(keyColumnName);
+        int updatedColumnIndex = csvReader.getHeaderIndex(updatedColumnName);
+        if (updatedColumnIndex == -1 || keyColumnIndex == -1) {
             throw new Exception("Invalid column name");
         }
 
         List<String[]> lines = csvReader.getAll();
         for (String[] line : lines) {
-            if (line[index].equals(oldValue))
-                line[index] = newValue;
+            if (line[keyColumnIndex].equals(keyValue))
+                line[updatedColumnIndex] = newValue;
         }
         csvWriter.clearAndInsertLines(lines);
     }
