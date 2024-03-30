@@ -39,30 +39,30 @@ public class CategoryController {
             return category;
         } else {
             res.status(StatusCode.NOT_FOUND.getCode());
-            return String.format("Category with id: %s is not found", categoryId);
+            return String.format("Category with id = %s is not found", categoryId);
         }
     }
 
     private Object getCategoryById(spark.Request req, spark.Response res) {
         log.info("get category by id method");
         String categoryId = req.params(CATEGORY_ID_PARAMETER);
-        checkCategoryExists(categoryId, res);
-        if (res.status() == 200) {
-            return categoryService.getCategoryById(categoryId);
+        Object checkResult =  checkCategoryExists(categoryId, res);
+        if (res.status() == StatusCode.OK.getCode()) {
+            return checkResult;
         }
         res.status(StatusCode.NOT_FOUND.getCode());
-        return new MessageResponse("Category not found");
+        return new MessageResponse((String) checkResult);
     }
 
     private Object getAllBooksInCategory(spark.Request req, spark.Response res) {
         log.info("get all books in category method");
         String categoryId = req.params(CATEGORY_ID_PARAMETER);
-        checkCategoryExists(categoryId, res);
-        if (res.status() == 200) {
+        Object errorMessage = checkCategoryExists(categoryId, res);
+        if (res.status() == StatusCode.OK.getCode()) {
             return categoryService.getBooksByCategory(categoryId);
         }
         res.status(StatusCode.NOT_FOUND.getCode());
-        return new MessageResponse("Category not found");
+        return new MessageResponse((String) errorMessage);
     }
 
     private Object createCategory(spark.Request req, spark.Response res) {
