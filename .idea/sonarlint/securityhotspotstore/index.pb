@@ -413,3 +413,11 @@ h
 8common/src/main/java/org/common/utils/ErrorResponse.java,0\c\0c9df44e9d2d80228b39c5d5255bfb46dfec05ef
 j
 :common/src/main/java/org/common/utils/MessageResponse.java,e\b\eba63183a9b7a7532c29035f96b4184205f9db2c
+w
+Gcommon/src/main/java/org/common/responseBody/CategoryUpdateRequest.java,0\c\0c8dd6a901b19a4ee7a97f81447e9eb0a9bf2b37
+x
+Hcommon/src/main/java/org/common/response_body/CategoryUpdateRequest.java,3\4\34e3f43f4a579dc064b862bb4e15232be20cf14b
+b
+2common/src/main/java/org/common/utils/Mappper.java,7\a\7afbea98b5de55816861aedd2329dc9b62aab4c5
+a
+1common/src/main/java/org/common/utils/Mapper.java,7\f\7f571cd732de5fe5d8ae057791e23a72479afe07

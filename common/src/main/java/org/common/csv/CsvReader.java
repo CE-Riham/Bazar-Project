@@ -11,7 +11,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CsvReader{
+public class CsvReader {
 
     //    private final File file;
     private final String path;
@@ -20,21 +20,28 @@ public class CsvReader{
 
     public String[] getHeaders() {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            return br.readLine().split(DELIMITER);
+            String line = br.readLine();
+            if (line != null) {
+                String[] headers = line.split(DELIMITER);
+                for (int i = 0; i < headers.length; i++)
+                    headers[i] = headers[i].trim();
+                return headers;
+            }
         } catch (IOException e) {
             log.error(String.format(ERROR_MSG, e.getMessage()));
         }
         return new String[0];
     }
 
-    public int getHeaderIndex(String columnName){
+    public int getHeaderIndex(String columnName) {
         String[] headers = getHeaders();
         int index = -1;
-        for (int i = 0; i < headers.length; i++)
+        for (int i = 0; i < headers.length; i++) {
             if (headers[i].equals(columnName)) {
                 index = i;
                 break;
             }
+        }
         return index;
     }
 
@@ -45,6 +52,7 @@ public class CsvReader{
             String line = br.readLine();
             while ((line = br.readLine()) != null) {
                 String[] cells = line.split(DELIMITER);
+                for (int i = 0; i < cells.length; i++) cells[i] = cells[i].trim();
                 lines.add(cells);
             }
         } catch (IOException e) {

@@ -5,7 +5,10 @@ import lombok.extern.java.Log;
 import org.catalog.services.BookService;
 import org.common.enums.StatusCode;
 import org.common.enums.urls.BookUrl;
+import org.common.enums.urls.CategoryUrl;
 import org.common.models.Book;
+import org.common.models.Category;
+import org.common.utils.HttpRequestSender;
 import org.common.utils.MessageResponse;
 
 import static spark.Spark.*;
@@ -16,6 +19,7 @@ public class BookController {
     private final BookService bookService;
     private final Gson gson = new Gson();
     private static final String BOOK_ID_PARAMETER = BookUrl.BOOK_ID_PARAMETER.getUrl();
+    private static final String CATEGORY_ID_PARAMETER = BookUrl.CATEGORY_ID_PARAMETER.getUrl();
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
@@ -32,6 +36,7 @@ public class BookController {
             post(BookUrl.CREATE_BOOK_PATH.getUrl(), this::createBook, gson::toJson);
             put(BookUrl.UPDATE_BOOK_BY_ID_PATH.getUrl(), this::updateBookById, gson::toJson);
             delete(BookUrl.DELETE_BOOK_BY_ID_PATH.getUrl(), this::deleteBookById, gson::toJson);
+            put(BookUrl.UPDATE_BOOKS_CATEGORY_PATH.getUrl(), this::updateBooksCategoryName, gson::toJson);
         });
     }
 
@@ -69,7 +74,7 @@ public class BookController {
     private Object updateBookById(spark.Request req, spark.Response res) {
         log.info("update book method");
         String bookId = req.params(BOOK_ID_PARAMETER);
-        Object checkResult =  checkBookExists(bookId, res);
+        Object checkResult = checkBookExists(bookId, res);
         if (res.status() == 200) {
             Book newBook = gson.fromJson(req.body(), Book.class);
             newBook.setId(bookId);
@@ -89,5 +94,39 @@ public class BookController {
         return new MessageResponse((String) checkResult);
     }
 
+    private String buildCategoryUrl(String categoryId) {
+        return CategoryUrl.CATALOG_SERVICE_BASE.getUrl() + CategoryUrl.CATEGORY_API_PATH.getUrl() + "/" + categoryId;
+    }
+
+    private Object fetchCategoryNameById(String categoryId, spark.Response res) {
+        String getCategoryUrl = buildCategoryUrl(categoryId);
+        // send GET request to catalog server
+        String getCategoryResponse = HttpRequestSender.sendGetRequest(getCategoryUrl, res);
+
+        if (res.status() == StatusCode.OK.getCode()) {
+            return (gson.fromJson(getCategoryResponse, Category.class)).getName();
+        } else {
+            return gson.fromJson(getCategoryResponse, MessageResponse.class);
+        }
+    }
+
+    private Object updateBooksCategoryName(spark.Request req, spark.Response res) {
+        try {
+            String newCategoryName = gson.fromJson(req.body(), Category.class).getName();
+            // get oldCategoryName
+            String oldCategoryID = req.params(CATEGORY_ID_PARAMETER);
+            Object oldCategoryName = fetchCategoryNameById(oldCategoryID, res);
+            if (res.status() == StatusCode.OK.getCode()) {
+                bookService.updateBooksCategoryName((String) oldCategoryName, newCategoryName);
+                res.status(StatusCode.OK.getCode());
+            } else {
+                return oldCategoryName;
+            }
+            return new MessageResponse("Books Category was updated successfully.");
+        } catch (Exception e) {
+            res.status(StatusCode.NOT_FOUND.getCode());
+            return new MessageResponse("Invalid category name.");
+        }
+    }
 
 }

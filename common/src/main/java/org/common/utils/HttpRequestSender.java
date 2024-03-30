@@ -8,6 +8,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.common.enums.StatusCode;
 
 /**
  * This class is used to send HTTP requests.
@@ -28,13 +29,18 @@ public class HttpRequestSender {
      * @param url The URL to send the GET request to.
      * @return The response body as a string, or a MessageResponse object if an exception occurred.
      */
-    public static Object sendGetRequest(String url) {
+    public static String sendGetRequest(String url, spark.Response res) {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpGet request = new HttpGet(url);
-            // Execute the request and return the response body
-            return client.execute(request, httpResponse -> EntityUtils.toString(httpResponse.getEntity()));
+            // Execute the request and process the response
+            return client.execute(request, httpResponse -> {
+                // Here you can check httpResponse status code and decide what to do
+                res.status(httpResponse.getStatusLine().getStatusCode());
+                return EntityUtils.toString(httpResponse.getEntity());
+            });
         } catch (Exception e) {
-            return new MessageResponse("Can't send GET request: " + e.getMessage());
+            res.status(StatusCode.INTERNAL_SERVER_ERROR.getCode());
+            return "Can't send GET request: " + e.getMessage();
         }
     }
 

@@ -21,8 +21,8 @@ public class Main {
             //TODO: update path when testing on docker
             String catalogServiceUrl = CategoryUrl.CATALOG_SERVICE_BASE.getUrl();
             String url = catalogServiceUrl + CategoryUrl.CATEGORY_API_PATH.getUrl() + "/1";
-            return HttpRequestSender.sendGetRequest(url);
-
+//            return HttpRequestSender.sendGetRequest(url);
+                return "";
         });
         post("/category", (req, res) -> {
             String catalogServiceUrl = CategoryUrl.CATALOG_SERVICE_BASE.getUrl();

@@ -24,6 +24,7 @@ public class CategoryController {
 
     private void setupRoutes() {
         path(CategoryUrl.CATEGORY_API_PATH.getUrl(), () -> {
+            get(CategoryUrl.GET_CATEGORY_BY_ID.getUrl(), this::getCategoryById, gson::toJson);
             get(CategoryUrl.GET_ALL_BOOKS_BY_CATEGORY_ID.getUrl(), this::getAllBooksInCategory, gson::toJson);
         });
         path(CategoryUrl.CATEGORY_ADMIN_API_PATH.getUrl(), () -> {
@@ -40,6 +41,17 @@ public class CategoryController {
             res.status(StatusCode.NOT_FOUND.getCode());
             return String.format("Category with id: %s is not found", categoryId);
         }
+    }
+
+    private Object getCategoryById(spark.Request req, spark.Response res) {
+        log.info("get category by id method");
+        String categoryId = req.params(CATEGORY_ID_PARAMETER);
+        checkCategoryExists(categoryId, res);
+        if (res.status() == 200) {
+            return categoryService.getCategoryById(categoryId);
+        }
+        res.status(StatusCode.NOT_FOUND.getCode());
+        return new MessageResponse("Category not found");
     }
 
     private Object getAllBooksInCategory(spark.Request req, spark.Response res) {

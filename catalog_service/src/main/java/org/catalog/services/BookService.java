@@ -38,4 +38,9 @@ public class BookService {
     public void deleteBookById(String id) {
         bookRepository.deleteObjectsBy(BookColumn.ID.toString(), id);
     }
+
+    public void updateBooksCategoryName(String oldCategoryName, String newCategoryName) throws Exception {
+        bookRepository.updateSpecificField(BookColumn.CATEGORY.toString(), oldCategoryName,
+                BookColumn.CATEGORY.toString(), newCategoryName);
+    }
 }
