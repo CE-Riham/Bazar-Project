@@ -3,6 +3,7 @@ package org.common.utils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -51,7 +52,7 @@ public class HttpRequestSender {
      * @param json The JSON body to include in the POST request.
      * @return The response body as a string, or a MessageResponse object if an exception occurred.
      */
-    public static Object sendPostRequest(String url, String json) {
+    public static Object sendPostRequest(String url, String json, spark.Response res) {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost request = new HttpPost(url);
             HttpEntity stringEntity = new StringEntity(json, ContentType.APPLICATION_JSON);
@@ -60,6 +61,23 @@ public class HttpRequestSender {
 
         } catch (Exception e) {
             return new MessageResponse("Can't send POST request: " + e.getMessage());
+        }
+    }
+
+    public static String sendPutRequest(String url, String json, spark.Response res) {
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            HttpPut request = new HttpPut(url);
+            HttpEntity stringEntity = new StringEntity(json, ContentType.APPLICATION_JSON);
+            request.setEntity(stringEntity);
+
+            // Execute the request and process the response
+            return client.execute(request, httpResponse -> {
+                res.status(httpResponse.getStatusLine().getStatusCode());
+                return EntityUtils.toString(httpResponse.getEntity());
+            });
+        } catch (Exception e) {
+            res.status(StatusCode.INTERNAL_SERVER_ERROR.getCode());
+            return "Can't send PUT request: " + e.getMessage();
         }
     }
 }

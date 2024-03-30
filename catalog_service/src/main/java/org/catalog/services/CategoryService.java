@@ -42,4 +42,9 @@ public class CategoryService {
         categoryRepository.add(newCategory);
         return newCategory;
     }
+
+    public Category updateCategory(String id, Category newCategory) {
+        categoryRepository.updateObjectsBy(CategoryColumn.ID.toString(), id, newCategory);
+        return getCategoryById(id);
+    }
 }

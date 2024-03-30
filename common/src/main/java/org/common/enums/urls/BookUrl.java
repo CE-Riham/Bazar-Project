@@ -11,7 +11,8 @@ public enum BookUrl {
     CREATE_BOOK_PATH(""),
     UPDATE_BOOK_BY_ID_PATH("/" + BOOK_ID_PARAMETER.getUrl()),
     DELETE_BOOK_BY_ID_PATH("/" + BOOK_ID_PARAMETER.getUrl()),
-    UPDATE_BOOKS_CATEGORY_PATH("/books-category" + "/" + CATEGORY_ID_PARAMETER.getUrl());
+    BOOKS_CATEGORY_PATH("/books-category"),
+    UPDATE_BOOKS_CATEGORY_PATH(BOOKS_CATEGORY_PATH.getUrl() + "/" + CATEGORY_ID_PARAMETER.getUrl());
     private final String url;
 
     BookUrl(String url) {

@@ -27,7 +27,7 @@ public class Main {
         post("/category", (req, res) -> {
             String catalogServiceUrl = CategoryUrl.CATALOG_SERVICE_BASE.getUrl();
             String url = catalogServiceUrl + CategoryUrl.CATEGORY_ADMIN_API_PATH.getUrl();
-            return HttpRequestSender.sendPostRequest(url, req.body());
+            return " HttpRequestSender.sendPostRequest(url, req.body())";
         });
 
 

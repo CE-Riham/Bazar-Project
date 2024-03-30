@@ -110,7 +110,7 @@ public class BookController {
         }
     }
 
-    private Object updateBooksCategoryName(spark.Request req, spark.Response res) {
+    private MessageResponse updateBooksCategoryName(spark.Request req, spark.Response res) {
         try {
             String newCategoryName = gson.fromJson(req.body(), Category.class).getName();
             // get oldCategoryName
@@ -120,12 +120,13 @@ public class BookController {
                 bookService.updateBooksCategoryName((String) oldCategoryName, newCategoryName);
                 res.status(StatusCode.OK.getCode());
             } else {
-                return oldCategoryName;
+                // MessageResponse if category doesn't exist
+                return (MessageResponse) oldCategoryName;
             }
             return new MessageResponse("Books Category was updated successfully.");
         } catch (Exception e) {
             res.status(StatusCode.NOT_FOUND.getCode());
-            return new MessageResponse("Invalid category name.");
+            return new MessageResponse("Couldn't update books category.");
         }
     }
 
