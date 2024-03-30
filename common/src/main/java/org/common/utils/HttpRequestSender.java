@@ -1,5 +1,6 @@
 package org.common.utils;
 
+import lombok.extern.java.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -15,6 +16,7 @@ import org.common.enums.StatusCode;
  * This class is used to send HTTP requests.
  * It provides methods to send GET and POST requests.
  */
+@Log
 public class HttpRequestSender {
 
     /**
@@ -31,6 +33,7 @@ public class HttpRequestSender {
      * @return The response body as a string, or a MessageResponse object if an exception occurred.
      */
     public static String sendGetRequest(String url, spark.Response res) {
+        log.info("sending a GET request to " + url);
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpGet request = new HttpGet(url);
             // Execute the request and process the response
@@ -53,18 +56,24 @@ public class HttpRequestSender {
      * @return The response body as a string, or a MessageResponse object if an exception occurred.
      */
     public static Object sendPostRequest(String url, String json, spark.Response res) {
+        log.info("sending a POST request to " + url);
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPost request = new HttpPost(url);
             HttpEntity stringEntity = new StringEntity(json, ContentType.APPLICATION_JSON);
             request.setEntity(stringEntity);
-            return client.execute(request, httpResponse -> EntityUtils.toString(httpResponse.getEntity()));
-
+            // Execute the request and process the response
+            return client.execute(request, httpResponse -> {
+                res.status(httpResponse.getStatusLine().getStatusCode());
+                return EntityUtils.toString(httpResponse.getEntity());
+            });
         } catch (Exception e) {
-            return new MessageResponse("Can't send POST request: " + e.getMessage());
+            res.status(StatusCode.INTERNAL_SERVER_ERROR.getCode());
+            return "Can't send POST request: " + e.getMessage();
         }
     }
 
     public static String sendPutRequest(String url, String json, spark.Response res) {
+        log.info("sending a PUT request to " + url);
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             HttpPut request = new HttpPut(url);
             HttpEntity stringEntity = new StringEntity(json, ContentType.APPLICATION_JSON);
