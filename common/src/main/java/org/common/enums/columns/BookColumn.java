@@ -1,16 +1,17 @@
-package org.common.enums;
+package org.common.enums.columns;
 
-public enum OrderColumn {
-    ID("Id"),
+public enum BookColumn {
+    ID("ID"),
+    TITLE("Title"),
+    PRICE("Price"),
     QUANTITY("Quantity"),
-    PAIDAMOUNT("PaidAmount"),
-    BOOKID("bookId");
+    CATEGORY("Category");
+
     private final String columnName;
 
-    OrderColumn(String columnName) {
+    BookColumn(String columnName) {
         this.columnName = columnName;
     }
-
     @Override
     public String toString() {
         return this.columnName;

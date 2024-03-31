@@ -1,4 +1,4 @@
-package org.common.enums;
+package org.common.enums.columns;
 
 public enum CategoryColumn {
     ID("ID"),

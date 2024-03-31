@@ -1,9 +1,21 @@
 package org.common.parsers;
 
-
 import org.common.models.Order;
 
+/**
+ * This class implements the ParserInterface for the Order entity.
+ * It provides methods to convert an Order object to a string array and vice versa.
+ */
 public class OrderParser implements ParserInterface<Order> {
+
+    /**
+     * This method converts a string array to an Order object.
+     * It expects the string array to have exactly 4 elements (ID, bookId, quantity, paidAmount).
+     * If the string array does not have exactly 4 elements, it throws an IllegalArgumentException.
+     * If the quantity or paidAmount cannot be parsed to a number, it throws an IllegalArgumentException.
+     * @param line The string array to be converted to an Order object.
+     * @return The Order object.
+     */
     @Override
     public Order toObject(String[] line) {
         if (line.length != 4) {
@@ -21,6 +33,12 @@ public class OrderParser implements ParserInterface<Order> {
         }
     }
 
+    /**
+     * This method converts an Order object to a string array.
+     * The string array will have exactly 4 elements (ID, bookId, quantity, paidAmount).
+     * @param object The Order object to be converted to a string array.
+     * @return The string array.
+     */
     @Override
     public String[] toStringArray(Order object) {
         String[] row = new String[4];

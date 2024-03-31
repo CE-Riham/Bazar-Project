@@ -1,14 +1,12 @@
 package org.order.services;
 
-import org.common.csv.CsvReader;
-import org.common.csv.CsvWriter;
+import org.common.enums.columns.OrderColumn;
 import org.common.models.Order;
 import org.common.parsers.OrderParser;
 import org.common.repository.Repository;
 
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 public class OrderService {
     private static final String ORDERS_FILE_PATH = "order_service/data/Orders.csv";
@@ -23,13 +21,22 @@ public class OrderService {
         return orderRepository.getAll();
     }
 
-    public Order getOrderById(Integer orderId) {
-//        return orderCsvReader.getObjectWithCondition(OrderColumn.ID.toString(), orderId.toString());
-        return null;
+    public Order getOrderById(String orderId) {
+        return orderRepository.getObjectBy(OrderColumn.ID.toString(), orderId);
     }
 
-    public void createOrder(Order newOrder) {
+    public Order createOrder(Order newOrder) {
+        newOrder.setId(UUID.randomUUID().toString());
+        orderRepository.add(newOrder);
+        return newOrder;
+    }
 
-//        orderCsvWriter.insertObject(newOrder);
+    public Order updateOrderById(String id, Order newOrder) {
+        orderRepository.updateObjectsBy(OrderColumn.ID.toString(), id, newOrder);
+        return getOrderById(id);
+    }
+
+    public void deleteOrderById(String id) {
+        orderRepository.deleteObjectsBy(OrderColumn.ID.toString(), id);
     }
 }

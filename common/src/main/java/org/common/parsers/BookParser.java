@@ -2,10 +2,21 @@ package org.common.parsers;
 
 import org.common.models.Book;
 
-import java.util.function.Function;
+/**
+ * This class implements the ParserInterface for the Book entity.
+ * It provides methods to convert a Book object to a string array and vice versa.
+ */
+public class BookParser implements ParserInterface<Book> {
 
-public class BookParser implements ParserInterface<Book>{
-
+    /**
+     * This method converts a string array to a Book object.
+     * It expects the string array to have exactly 5 elements (ID, title, price, quantity, category name).
+     * If the string array does not have exactly 5 elements, it throws an IllegalArgumentException.
+     * If the price or quantity cannot be parsed to a number, it throws an IllegalArgumentException.
+     *
+     * @param line The string array to be converted to a Book object.
+     * @return The Book object.
+     */
     @Override
     public Book toObject(String[] line) {
         if (line.length != 5) {
@@ -24,6 +35,13 @@ public class BookParser implements ParserInterface<Book>{
         }
     }
 
+    /**
+     * This method converts a Book object to a string array.
+     * The string array will have exactly 5 elements (ID, title, price, quantity, category name).
+     *
+     * @param object The Book object to be converted to a string array.
+     * @return The string array.
+     */
     @Override
     public String[] toStringArray(Book object) {
         String[] row = new String[5];
