@@ -7,6 +7,7 @@ import org.common.enums.StatusCode;
 import org.common.enums.urls.BookUrl;
 import org.common.enums.urls.CategoryUrl;
 import org.common.models.Category;
+import org.common.url_builders.BookUrlBuilder;
 import org.common.utils.HttpRequestSender;
 import org.common.utils.MessageResponse;
 
@@ -76,12 +77,8 @@ public class CategoryController {
         return addedCategory;
     }
 
-    private String buildBookUrl(String categoryId) {
-        return CategoryUrl.CATALOG_SERVICE_BASE.getUrl() + BookUrl.BOOK_ADMIN_API_PATH.getUrl() + BookUrl.BOOKS_CATEGORY_PATH.getUrl() + "/" + categoryId;
-    }
-
     private MessageResponse fetchUpdateBooksCategory(String categoryId, String json, spark.Response res) {
-        String updateBooksCategoryUrl = buildBookUrl(categoryId);
+        String updateBooksCategoryUrl = BookUrlBuilder.updateBooksCategoryUrl(categoryId);
         // send PUT request to catalog server
         String updateCategoryResponse = HttpRequestSender.sendPutRequest(updateBooksCategoryUrl, json, res);
         return gson.fromJson(updateCategoryResponse, MessageResponse.class);
