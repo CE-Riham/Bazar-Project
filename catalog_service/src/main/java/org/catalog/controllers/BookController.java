@@ -96,6 +96,7 @@ public class BookController {
 
 
     private Object fetchCategoryNameById(String categoryId, spark.Response res) {
+        //TODO: remove it
         String getCategoryUrl = CategoryUrlBuilder.getCategoryByIdUrl(categoryId);
         // send GET request to catalog server
         String getCategoryResponse = HttpRequestSender.sendGetRequest(getCategoryUrl, res);
@@ -108,6 +109,7 @@ public class BookController {
     }
 
     private MessageResponse updateBooksCategoryName(spark.Request req, spark.Response res) {
+        //TODO: have to be moved to BookService Class and use getCategoryById method from CategoryService instead of sending a request
         try {
             String newCategoryName = gson.fromJson(req.body(), Category.class).getName();
             // get oldCategoryName

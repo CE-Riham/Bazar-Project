@@ -2,6 +2,7 @@ package org.common.utils;
 
 import lombok.extern.java.Log;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -87,6 +88,21 @@ public class HttpRequestSender {
         } catch (Exception e) {
             res.status(StatusCode.INTERNAL_SERVER_ERROR.getCode());
             return "Can't send PUT request: " + e.getMessage();
+        }
+    }
+
+    public static String sendDeleteRequest(String url, spark.Response res) {
+        log.info("sending a DELETE request to " + url);
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            HttpDelete request = new HttpDelete(url);
+            // Execute the request and process the response
+            return client.execute(request, httpResponse -> {
+                res.status(httpResponse.getStatusLine().getStatusCode());
+                return EntityUtils.toString(httpResponse.getEntity());
+            });
+        } catch (Exception e) {
+            res.status(StatusCode.INTERNAL_SERVER_ERROR.getCode());
+            return "Can't send DELETE request: " + e.getMessage();
         }
     }
 }

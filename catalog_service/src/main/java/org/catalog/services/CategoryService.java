@@ -47,4 +47,8 @@ public class CategoryService {
         categoryRepository.updateObjectsBy(CategoryColumn.ID.toString(), id, newCategory);
         return getCategoryById(id);
     }
+
+    public void deleteCategoryById(String id) {
+        categoryRepository.deleteObjectsBy(CategoryColumn.ID.toString(), id);
+    }
 }

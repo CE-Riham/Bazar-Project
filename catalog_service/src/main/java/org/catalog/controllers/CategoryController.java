@@ -78,6 +78,7 @@ public class CategoryController {
     }
 
     private MessageResponse fetchUpdateBooksCategory(String categoryId, String json, spark.Response res) {
+        //TODO: have to be removed
         String updateBooksCategoryUrl = BookUrlBuilder.updateBooksCategoryUrl(categoryId);
         // send PUT request to catalog server
         String updateCategoryResponse = HttpRequestSender.sendPutRequest(updateBooksCategoryUrl, json, res);
@@ -85,6 +86,11 @@ public class CategoryController {
     }
 
     private Object updateCategory(spark.Request req, spark.Response res) {
+        /*
+        TODO: fix deleteBooksCategory, use the method immediately from bookService
+                instead of sending a request.
+         */
+
         log.info("update category method");
         Category category = gson.fromJson(req.body(), Category.class);
         String categoryId = req.params(CATEGORY_ID_PARAMETER);
@@ -97,5 +103,16 @@ public class CategoryController {
             return updatedCategory;
         }
         return fetchUpdateResponse;
+    }
+    private Object deleteCategory(spark.Request req, spark.Response res) {
+        log.info("delete category method");
+        String categoryId = req.params(CATEGORY_ID_PARAMETER);
+        //TODO: check id the category exists, handle changes on books with that category, delete it
+        if (res.status() == StatusCode.OK.getCode()) {
+            categoryService.deleteCategoryById(categoryId);
+            res.status(StatusCode.OK.getCode());
+            return new MessageResponse("Category was deleted successfully.");
+        }
+        return "";
     }
 }
