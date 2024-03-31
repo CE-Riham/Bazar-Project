@@ -421,3 +421,13 @@ b
 2common/src/main/java/org/common/utils/Mappper.java,7\a\7afbea98b5de55816861aedd2329dc9b62aab4c5
 a
 1common/src/main/java/org/common/utils/Mapper.java,7\f\7f571cd732de5fe5d8ae057791e23a72479afe07
+e
+5common/src/main/java/org/common/utils/urlBuilder.java,8\a\8a666346d17f391137a9a35abe449b99f7272e43
+e
+5common/src/main/java/org/common/utils/UrlBuilder.java,2\d\2d2063edde60aa66f4325f0b6b72f6ca06cf42e1
+i
+9common/src/main/java/org/common/utils/BookUrlBuilder.java,2\6\269df5ecc1f20bee96a498c7037d3e4d9f6699f9
+p
+@common/src/main/java/org/common/url_builders/BookUrlBuilder.java,b\9\b9698bdfaa0e435bd073a1a942aa4da11d68ad9d
+t
+Dcommon/src/main/java/org/common/url_builders/CategoryUrlBuilder.java,9\c\9c1649c42fa3fd94473fe3714ce6b988ebc85acf

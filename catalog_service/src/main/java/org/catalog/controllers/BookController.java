@@ -5,9 +5,9 @@ import lombok.extern.java.Log;
 import org.catalog.services.BookService;
 import org.common.enums.StatusCode;
 import org.common.enums.urls.BookUrl;
-import org.common.enums.urls.CategoryUrl;
 import org.common.models.Book;
 import org.common.models.Category;
+import org.common.url_builders.CategoryUrlBuilder;
 import org.common.utils.HttpRequestSender;
 import org.common.utils.MessageResponse;
 
@@ -94,12 +94,9 @@ public class BookController {
         return new MessageResponse((String) checkResult);
     }
 
-    private String buildCategoryUrl(String categoryId) {
-        return CategoryUrl.CATALOG_SERVICE_BASE.getUrl() + CategoryUrl.CATEGORY_API_PATH.getUrl() + "/" + categoryId;
-    }
 
     private Object fetchCategoryNameById(String categoryId, spark.Response res) {
-        String getCategoryUrl = buildCategoryUrl(categoryId);
+        String getCategoryUrl = CategoryUrlBuilder.getCategoryByIdUrl(categoryId);
         // send GET request to catalog server
         String getCategoryResponse = HttpRequestSender.sendGetRequest(getCategoryUrl, res);
 
