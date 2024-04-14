@@ -8,6 +8,8 @@ import org.common.parsers.BookParser;
 import org.common.parsers.CategoryParser;
 import org.common.repository.Repository;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,8 +21,32 @@ public class CategoryService {
     private final Repository<Book> bookRepository;
 
     public CategoryService() {
-        categoryRepository = new Repository<>(CATEGORIES_FILE_PATH, new CategoryParser());
-        bookRepository = new Repository<>(BOOKS_FILE_PATH, new BookParser());
+        File booksFile = null;
+
+        try {
+            booksFile = Paths.get("data", "Books.csv").toFile();
+
+            if (!booksFile.exists() || booksFile.isDirectory()) {
+                throw new Exception("Default file path is not valid.");
+            }
+        } catch (Exception e) {
+            booksFile = new File(BOOKS_FILE_PATH);
+        }
+
+        File categoriesFile = null;
+
+        try {
+            categoriesFile = Paths.get("data", "Categories.csv").toFile();
+
+            if (!categoriesFile.exists() || categoriesFile.isDirectory()) {
+                throw new Exception("Default file path is not valid.");
+            }
+        } catch (Exception e) {
+            categoriesFile = new File(CATEGORIES_FILE_PATH);
+        }
+
+        categoryRepository = new Repository<>(categoriesFile, new CategoryParser());
+        bookRepository = new Repository<>(booksFile, new BookParser());
     }
 
     public List<Category> getAllCategories() {
@@ -31,9 +57,9 @@ public class CategoryService {
         return categoryRepository.getObjectBy(CategoryColumn.ID.toString(), id);
     }
 
-    public List<Book> getBooksByCategory(String categoryID) {
+    public List<Book> getBooksByCategory(String categoryName) {
         // get category name for categoryID
-        Category category = categoryRepository.getObjectBy(CategoryColumn.ID.toString(), categoryID);
+        Category category = categoryRepository.getObjectBy(CategoryColumn.NAME.toString(), categoryName);
         return bookRepository.getObjectsBy(BookColumn.CATEGORY.toString(), category.getName());
     }
 

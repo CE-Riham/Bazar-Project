@@ -19,6 +19,7 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final Gson gson = new Gson();
     private static final String CATEGORY_ID_PARAMETER = CategoryUrl.CATEGORY_ID_PARAMETER.getUrl();
+    private static final String CATEGORY_NAME_PARAMETER = CategoryUrl.CATEGORY_NAME_PARAMETER.getUrl();
 
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
@@ -27,12 +28,11 @@ public class CategoryController {
 
     private void setupRoutes() {
         path(CategoryUrl.CATEGORY_API_PATH.getUrl(), () -> {
-            get(CategoryUrl.GET_CATEGORY_BY_ID.getUrl(), this::getCategoryById, gson::toJson);
-            get(CategoryUrl.GET_ALL_BOOKS_BY_CATEGORY_ID.getUrl(), this::getAllBooksInCategory, gson::toJson);
+            get(CategoryUrl.GET_ALL_BOOKS_BY_CATEGORY_NAME.getUrl(), this::getAllBooksInCategory, gson::toJson);
         });
         path(CategoryUrl.CATEGORY_ADMIN_API_PATH.getUrl(), () -> {
+            get(CategoryUrl.GET_CATEGORY_BY_ID.getUrl(), this::getCategoryById, gson::toJson);
             post(CategoryUrl.CREATE_CATEGORY_PATH.getUrl(), this::createCategory, gson::toJson);
-            put(CategoryUrl.UPDATE_CATEGORY_BY_ID_PATH.getUrl(), this::updateCategory, gson::toJson);
         });
     }
 
@@ -60,13 +60,14 @@ public class CategoryController {
 
     private Object getAllBooksInCategory(spark.Request req, spark.Response res) {
         log.info("get all books in category method");
-        String categoryId = req.params(CATEGORY_ID_PARAMETER);
-        Object errorMessage = checkCategoryExists(categoryId, res);
+        String categoryName = req.params(CATEGORY_NAME_PARAMETER);
+//        Object errorMessage = checkCategoryExists(categoryName, res);
+        System.out.println(categoryName);
         if (res.status() == StatusCode.OK.getCode()) {
-            return categoryService.getBooksByCategory(categoryId);
+            return categoryService.getBooksByCategory(categoryName);
         }
         res.status(StatusCode.NOT_FOUND.getCode());
-        return new MessageResponse((String) errorMessage);
+        return new MessageResponse((String) "Not Found");
     }
 
     private Object createCategory(spark.Request req, spark.Response res) {
@@ -77,42 +78,4 @@ public class CategoryController {
         return addedCategory;
     }
 
-    private MessageResponse fetchUpdateBooksCategory(String categoryId, String json, spark.Response res) {
-        //TODO: have to be removed
-        String updateBooksCategoryUrl = BookUrlBuilder.updateBooksCategoryUrl(categoryId);
-        // send PUT request to catalog server
-        String updateCategoryResponse = HttpRequestSender.sendPutRequest(updateBooksCategoryUrl, json, res);
-        return gson.fromJson(updateCategoryResponse, MessageResponse.class);
-    }
-
-    private Object updateCategory(spark.Request req, spark.Response res) {
-        /*
-        TODO: fix deleteBooksCategory, use the method immediately from bookService
-                instead of sending a request.
-         */
-
-        log.info("update category method");
-        Category category = gson.fromJson(req.body(), Category.class);
-        String categoryId = req.params(CATEGORY_ID_PARAMETER);
-        category.setId(categoryId);
-        String json = gson.toJson(category);
-        MessageResponse fetchUpdateResponse = fetchUpdateBooksCategory(categoryId, json, res);
-        if (res.status() == StatusCode.OK.getCode()) {
-            Category updatedCategory = categoryService.updateCategory(categoryId, category);
-            res.status(StatusCode.OK.getCode());
-            return updatedCategory;
-        }
-        return fetchUpdateResponse;
-    }
-    private Object deleteCategory(spark.Request req, spark.Response res) {
-        log.info("delete category method");
-        String categoryId = req.params(CATEGORY_ID_PARAMETER);
-        //TODO: check id the category exists, handle changes on books with that category, delete it
-        if (res.status() == StatusCode.OK.getCode()) {
-            categoryService.deleteCategoryById(categoryId);
-            res.status(StatusCode.OK.getCode());
-            return new MessageResponse("Category was deleted successfully.");
-        }
-        return "";
-    }
 }

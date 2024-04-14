@@ -5,6 +5,7 @@ import org.common.csv.CsvReader;
 import org.common.csv.CsvWriter;
 import org.common.parsers.ParserInterface;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class Repository<T> {
     private final CsvWriter csvWriter;
     private final ParserInterface<T> parser;
 
-    public Repository(String path, ParserInterface parser) {
+    public Repository(File path, ParserInterface parser) {
         csvReader = new CsvReader(path);
         csvWriter = new CsvWriter(path);
         this.parser = parser;
@@ -33,6 +34,10 @@ public class Repository<T> {
 
     public List<T> getObjectsBy(String columnName, String value) {
         return stringListToObjectList(csvReader.getLinesWithCondition(columnName, value, true));
+    }
+
+    public List<T> getObjectsContainsBy(String columnName, String value) {
+        return stringListToObjectList(csvReader.getLinesWithConditionContains(columnName, value, true));
     }
 
     public T getObjectBy(String columnName, String value) {
@@ -62,7 +67,10 @@ public class Repository<T> {
                         try {
                             Object fieldValue = field.get(item);
                             if (fieldValue != null && fieldValue.toString().equals(keyValue)) {
-                                items.set(i, newObject);
+                                // Copy non-null properties from newObject to item
+                                mergeNonNullFields(item, newObject);
+                                items.set(i, item);
+                                System.out.println(items.get(i));
                             }
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
@@ -74,6 +82,17 @@ public class Repository<T> {
         csvWriter.clearFile();
         for (T item : items) {
             add(item);
+        }
+    }
+
+    private void mergeNonNullFields(T oldObject, T newObject) throws IllegalAccessException {
+        Field[] fields = newObject.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            Object newValue = field.get(newObject);
+            if (newValue != null) {
+                field.set(oldObject, newValue);
+            }
         }
     }
 

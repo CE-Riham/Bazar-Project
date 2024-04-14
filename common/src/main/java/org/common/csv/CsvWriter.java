@@ -1,5 +1,6 @@
 package org.common.csv;
 
+import java.io.File;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,13 +13,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class CsvWriter {
-    //    private final File file;
+    private final File file;
     private FileWriter writer;
-    private final String path;
+//    private final String path;
 
     private void openWriter(Boolean append) {
         try {
-            writer = new FileWriter(path, append);
+            writer = new FileWriter(file, append);
         } catch (IOException e) {
             log.error(e.getMessage());
         }
@@ -33,7 +34,7 @@ public class CsvWriter {
     }
 
     public void clearFile() {
-        String[] header = new CsvReader(path).getHeaders();
+        String[] header = new CsvReader(file).getHeaders();
         openWriter(false);
         closeWriter();
         insertLine(header);
@@ -60,7 +61,7 @@ public class CsvWriter {
 
     public void deleteObjectsWithCondition(String columnName, String value) {
         // Read all lines from the CSV file into a list where columnName not equal value
-        List<String[]> lines = new CsvReader(path).getLinesWithCondition(columnName, value, false);
+        List<String[]> lines = new CsvReader(file).getLinesWithCondition(columnName, value, false);
         // Clear the file to write the remaining rows back
         clearAndInsertLines(lines);
     }

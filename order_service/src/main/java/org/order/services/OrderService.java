@@ -5,6 +5,8 @@ import org.common.models.Order;
 import org.common.parsers.OrderParser;
 import org.common.repository.Repository;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,8 +15,19 @@ public class OrderService {
     private final Repository<Order> orderRepository;
 
     public OrderService() {
-//        File ordersFile = Paths.get("data", "Orders.csv").toFile();
-        orderRepository = new Repository<>(ORDERS_FILE_PATH, new OrderParser());
+        File ordersFile = null;
+
+        try {
+            ordersFile = Paths.get("data", "Orders.csv").toFile();
+
+            if (!ordersFile.exists() || ordersFile.isDirectory()) {
+                throw new Exception("Default file path is not valid.");
+            }
+        } catch (Exception e) {
+            ordersFile = new File(ORDERS_FILE_PATH);
+        }
+
+        orderRepository = new Repository<>(ordersFile, new OrderParser());
     }
 
     public List<Order> getAllOrders() {

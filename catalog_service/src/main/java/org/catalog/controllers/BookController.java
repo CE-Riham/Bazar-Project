@@ -11,6 +11,11 @@ import org.common.url_builders.CategoryUrlBuilder;
 import org.common.utils.HttpRequestSender;
 import org.common.utils.MessageResponse;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static spark.Spark.*;
 
 @Log
@@ -18,8 +23,9 @@ public class BookController {
 
     private final BookService bookService;
     private final Gson gson = new Gson();
-    private static final String BOOK_ID_PARAMETER = BookUrl.BOOK_ID_PARAMETER.getUrl();
     private static final String CATEGORY_ID_PARAMETER = BookUrl.CATEGORY_ID_PARAMETER.getUrl();
+    private static final String BOOK_ID_PARAMETER = BookUrl.BOOK_ID_PARAMETER.getUrl();
+    private static final String BOOK_NAME_PARAMETER = BookUrl.BOOK_NAME_PARAMETER.getUrl();
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
@@ -30,13 +36,13 @@ public class BookController {
         path(BookUrl.BOOK_API_PATH.getUrl(), () -> {
             get(BookUrl.GET_ALL_BOOKS_PATH.getUrl(), this::getAllBooks, gson::toJson);
             get(BookUrl.GET_BOOK_BY_ID_PATH.getUrl(), this::getBookById, gson::toJson);
+            get(BookUrl.GET_BOOK_BY_NAME_PATH.getUrl(), this::getBookByName, gson::toJson);
         });
 
         path(BookUrl.BOOK_ADMIN_API_PATH.getUrl(), () -> {
             post(BookUrl.CREATE_BOOK_PATH.getUrl(), this::createBook, gson::toJson);
             put(BookUrl.UPDATE_BOOK_BY_ID_PATH.getUrl(), this::updateBookById, gson::toJson);
             delete(BookUrl.DELETE_BOOK_BY_ID_PATH.getUrl(), this::deleteBookById, gson::toJson);
-            put(BookUrl.UPDATE_BOOKS_CATEGORY_PATH.getUrl(), this::updateBooksCategoryName, gson::toJson);
         });
     }
 
@@ -60,7 +66,29 @@ public class BookController {
     private Object getBookById(spark.Request req, spark.Response res) {
         log.info("get book by id method");
         String bookId = req.params(BOOK_ID_PARAMETER);
+
         return checkBookExists(bookId, res);
+    }
+
+    private Object getBookByName(spark.Request req, spark.Response res) {
+        log.info("get book by name method");
+        String bookTitle = req.params(BOOK_NAME_PARAMETER);
+        List<Book> books = bookService.getBooksByName(bookTitle);  // Get the list of books by title
+
+        if (!books.isEmpty()) {
+            List<Map<String, Object>> booksInfoList = new ArrayList<>();
+            for (Book book : books) {
+                Map<String, Object> minimalBookInfo = new HashMap<>();
+                minimalBookInfo.put("id", book.getId());
+                minimalBookInfo.put("title", book.getTitle());
+                booksInfoList.add(minimalBookInfo);
+            }
+            res.status(200);
+            return booksInfoList;
+        } else {
+            res.status(404);
+            return "No books found with title: " + bookTitle;
+        }
     }
 
     private Object createBook(spark.Request req, spark.Response res) {

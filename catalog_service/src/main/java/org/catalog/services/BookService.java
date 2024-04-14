@@ -5,6 +5,8 @@ import org.common.models.Book;
 import org.common.parsers.BookParser;
 import org.common.repository.Repository;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,7 +15,19 @@ public class BookService {
     private final Repository<Book> bookRepository;
 
     public BookService() {
-        bookRepository = new Repository<>(BOOKS_FILE_PATH, new BookParser());
+        File booksFile = null;
+
+        try {
+            booksFile = Paths.get("data", "Books.csv").toFile();
+
+            if (!booksFile.exists() || booksFile.isDirectory()) {
+                throw new Exception("Default file path is not valid.");
+            }
+        } catch (Exception e) {
+            booksFile = new File(BOOKS_FILE_PATH);
+        }
+
+        bookRepository = new Repository<>(booksFile, new BookParser());
     }
 
     public List<Book> getAllBooks() {
@@ -42,5 +56,9 @@ public class BookService {
     public void updateBooksCategoryName(String oldCategoryName, String newCategoryName) throws Exception {
         bookRepository.updateSpecificField(BookColumn.CATEGORY.toString(), oldCategoryName,
                 BookColumn.CATEGORY.toString(), newCategoryName);
+    }
+
+    public List<Book> getBooksByName(String title) {
+        return bookRepository.getObjectsContainsBy(BookColumn.TITLE.toString(), title);
     }
 }
